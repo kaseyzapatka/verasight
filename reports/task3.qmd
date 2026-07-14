@@ -1,0 +1,120 @@
+---
+title: "Task 3: Detecting Fraudulent Open-Ended Responses"
+subtitle: "A design memo for the Verasight Data Science team"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    theme: litera
+    highlight-style: github
+---
+
+> **Task 3.** Design a fully or partially automated workflow to detect potentially fraudulent
+> open-ended survey responses (e.g., *"What is the most important issue facing the US?"*) across
+> many surveys — what tools/methods at each stage, why this structure, how to validate it, and
+> how to iterate. *(Prompt paraphrased from the 2026 Data Scientist Case Study, Task 3.)*
+
+## Summary
+
+You've got huge volumes of open-ended answers across many surveys, and some are fake (bots, survey farms, people speed-clicking, AI-written). Reading them all by hand is impossible, so I'd build a **three-tier funnel**:
+
+- **Tier 1 (cheap filters):** runs cheap automatic checks on *every* response and gives each a risk score — the obviously-fine majority passes straight through.
+- **Tier 2 (LLM):** only the *flagged* minority goes to an LLM, which reads each one against a fixed rubric and labels it fraud / genuine / uncertain with a confidence.
+- **Tier 3 (humans):** people make the *costly* calls (actual removals) and spot-check both the flagged *and* the cleared piles to catch mistakes; their decisions become labels that make Tier 1 and the rubric smarter over time.
+
+Throughout: never remove a real respondent on one weak signal — make independent signals (text + closed-ended + paradata) agree and get a human sign-off; keep it cheap by only sending the hard cases to the LLM; keep every step **auditable** in case we have to defend a removal to a client or panelist; and keep improving it as fraudsters adapt.
+
+## Design principles
+
+- **Defense in depth.** Different fraud types (bots, farms, inattentive humans, AI-assisted) fail different checks. A fraudulent response must beat *all* layers, not one.
+- **Cheap first.** Deterministic filters are fast, explainable, and cheap; reserve the LLM for genuine judgment calls on cases we've already flagged.
+- **Corroboration before removal.** A single weak signal should not remove a respondent because it could be wrong; instead, independent signals should agree.
+- **Asymmetric cost.** Optimize for *high precision on the "remove" decision* (false positives hurt real people and the panel); recover recall via the LLM + human tiers, not by lowering the auto-removal bar.
+- **Human-in-the-loop + auditable.** Keep a person on the final costly call; log why each response was flagged and if/why ultimately removed.
+
+## Architecture
+
+```{mermaid}
+flowchart TD
+  A[Open-ended responses<br/>+ paradata + closed-ended] --> B[Tier 1: cheap signals<br/>dupes, length, timing, gibberish, off-topic]
+  B -->|risk score| C{Flagged?}
+  C -->|No, low risk| K[Auto-accept<br/>+ random audit sample]
+  C -->|Yes| D[Tier 2: LLM classifier<br/>rubric + structured output]
+  D -->|confident genuine| K
+  D -->|confident fraud| E[Tier 3: human review<br/>adjudicate removals]
+  D -->|uncertain / abstain| E
+  E --> F[(Gold labels)]
+  F -.retrain weights, tune thresholds, update rubric.-> B
+  F -.-> D
+```
+
+## Tier 1: Cheap, deterministic signals
+
+Every response gets a **vector of signals** and a combined **risk score**; the score orders a review queue and decides what escalates. Start with transparent rules + a logistic model over the signals (interpretable, easy to defend), not a black box.
+
+| Signal | What it catches |
+|---|---|
+| **Exact + near-duplicate** (within and *across* respondents) | Copy-paste, templated bot/farm answers, boilerplate |
+| **Length / low-effort** | One-word, empty-ish, or filler responses |
+| **Gibberish / keyboard-mash** | Non-language, random characters |
+| **Off-topic / non-responsive** | Answers that don't address the question |
+| **Copy-paste / web-lifted** | Verbatim from the prompt or the web |
+| **AI-generated markers** *(weak, see Risks)* | LLM-assisted text |
+| **Paradata + closed-ended** (see below) | Speeding, straightlining, bad device/IP |
+
+**Output:** a `flags` table keyed by `response_id` with each signal, the score, and the reason codes — so a reviewer (or a client) can see *why* something surfaced.
+
+## Tier 2: LLM classification on the flagged subset only
+
+Only responses above the risk threshold go to the LLM, with the **question text, the response, and the Tier-1 signals** as context (so the model corroborates rather than starts blind).
+
+- **Model tiering to control cost:** a fast cheap model (**Claude Haiku**) triages; escalate only low-confidence or high-stakes cases to a stronger model (**Claude Sonnet/Opus**).
+- **Fixed rubric + structured output.** The model returns JSON: a category, an `is_fraud` flag, a **calibrated confidence**, a short rationale, and which signals it relied on. An explicit **`uncertain` / abstain** option routes to humans instead of guessing.
+- **Stack:** the Anthropic SDK (Python/R); **prompt-cache the rubric** across the batch; log prompts + outputs by version.
+- **Guardrails:** the model judges *authenticity and effort*, never the respondent's opinion, dialect, or brevity-if-on-topic. Short, unpopular, or plainly written answers are **not** fraud.
+
+## Tier 3: Human review (two loops)
+
+1. **Adjudicate the costly calls.** Every auto-removal (or a high sample of them) gets a human sign-off before a respondent is dropped.
+2. **Audit *both* classes.** Sample the LLM's **cleared** responses too — not just the flagged ones — to catch false negatives, plus all low-confidence cases. Stratify: all removals, a random sample of "genuine", and the uncertain middle.
+
+Reviewers' decisions become the **gold-label set** and feed back into Tier-1 weights, thresholds, and the rubric. Track **inter-rater reliability** (Cohen's/Fleiss' κ) so the labels themselves are trustworthy.
+
+## Why tier instead of sending everything to an LLM
+
+- **Cost & scale.** Across many surveys that's millions of open-ends; an LLM on each is expensive and slow. Cheap signals dispatch the easy 90–95% for near-nothing.
+- **Precision & explainability.** Exact-duplicate and gibberish checks are deterministic and defensible; an LLM alone gives a probabilistic verdict that's harder to justify to a client.
+- **Robustness.** One model is a single point of failure — it can be gamed, drifts, and isn't calibrated to a survey's fraud base rate. Independent layers are harder to beat.
+- **Focus.** The LLM spends its budget where judgment actually helps (subtle off-topic, AI-assisted, borderline effort), not on obvious junk or obvious genuine answers.
+
+## Corroboration: closed-ended answers + paradata
+
+Text signals get much stronger when independent, hard-to-fake metadata agrees — this is the core of "don't rely on one mechanism":
+
+- **Closed-ended:** straightlining/pattern responding on grids, failed attention/trap items, logically impossible or contradictory answers (incl. across waves), rare improbable combinations.
+- **Paradata:** total duration and per-item latency (**speeding**), keystroke/paste events, device & browser fingerprint reuse, IP reputation (datacenter/VPN/proxy), geolocation vs. claimed region, multiple completes from one fingerprint.
+
+**Rule of thumb:** a gibberish open-end *and* speeding *and* a datacenter IP *and* straightlining is a confident removal; any one of those alone is only a flag for the next tier.
+
+## Validation
+
+- **Build a labeled gold set** across surveys and question types — human-adjudicated, stratified to include known fraud (past removals, seeded/honeypot responses, attention-check failures) and confirmed genuine.
+- **Metrics with the cost asymmetry front and center.** Report precision/recall/F1 *per category*, but choose the operating point on a **cost-weighted** basis: a false positive (dropping a real respondent) is weighted far more heavily than a false negative that the human tier can still catch. Show the confusion matrix and a precision–recall curve; pick the threshold, don't inherit it.
+- **Calibrate the LLM's confidence** (reliability diagram); if "0.9" isn't right ~90% of the time, recalibrate before trusting it for routing.
+- **Estimate recall** you can't see directly by **seeding known-fraud** responses and measuring catch rate.
+- **Monitor per survey / per question,** since base rates and fraud tactics vary; watch reviewer-overturn rate as a live quality signal.
+
+## Iterating to improve accuracy
+
+- **Closed feedback loop:** every human label retrains Tier-1 weights and re-tunes thresholds; recurring misses become new deterministic signals.
+- **Active learning:** prioritize labeling the *most informative* cases (near the threshold, or where LLM and signals disagree) to spend review time well.
+- **Drift watch:** fraud evolves — especially AI-generated text. Track signal distributions, LLM–signal agreement, and overturn rate over time; alarm on shifts.
+- **Version & shadow-test:** version rubric/prompts/thresholds; run a new version in **shadow mode** (scores but doesn't act) against the current one before it can remove anyone.
+- **Error analysis cadence:** a standing review of false pos/neg to feed the next iteration.
+
+## Risks & limitations
+
+- **AI-text detection is unreliable.** Perplexity/"AI detector" signals have high false-positive rates and penalize non-native and plain writing. Keep them as *soft* inputs, never a sole basis for removal.
+- **False-positive harm is real:** dropping genuine respondents damages data quality, panel trust, and retention — hence corroboration + human sign-off on every removal.
+- **Adversaries adapt;** treat this as an evolving system, not a one-time filter — the iteration loop is the point.

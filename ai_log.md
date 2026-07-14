@@ -152,4 +152,28 @@ hand-check before accepting.
 
 ### Task 3
 
+- [task 3] Drafted `reports/task3.qmd` — a design memo for a fraud-detection workflow on
+  open-ended responses (per user's detailed spec): 3-tier funnel (cheap deterministic signals →
+  LLM classifier on flagged subset → human adjudication + audit of both classes), R/Python tool
+  table per signal, mermaid architecture diagram, "why tier vs LLM-everything", closed-ended +
+  paradata corroboration, validation (labeled data, cost-asymmetric precision/recall, seeded
+  fraud for recall, calibration), iteration loop (active learning, drift, shadow-testing), risks
+  (AI-detection unreliable), and an appendix sample LLM prompt + JSON schema. Claude model
+  tiering (Haiku triage → Sonnet/Opus escalation). | accepted (user-directed design; AI drafted
+  prose + the sample rubric artifact).
+- [setup/harnessing] Built a `content-editor` subagent (`.claude/agents/content-editor.md`,
+  read-only) to review the user's OWN Task 3 & 4 writing on four axes — typos/grammar, clarity
+  (minimal edits **in the author's voice**, no genericizing), prompt-consistency (did they
+  answer each ask?), and comprehensiveness (gaps vs. the PDF prompt). Reports suggestions; never
+  edits files. | accepted.
+
 ### Task 4
+
+- [task 4] Ran the **content-editor** agent on the user's OWN `reports/task4.qmd` answers. It
+  preserved voice and caught a factual slip (P4 "6 months to a year" vs. the prompt's monthly
+  waves), an empty assumptions callout, and typo clusters. | Per user direction: fixed all
+  typos; corrected the P4 timeline to ~3-4 months; removed the empty assumptions callout
+  (assumptions already live in the ranking cells) and the scaffold banner; added short mentions
+  **in the user's voice** per project (questionnaire length P1; voter-contact mode P2 + a
+  ranking caveat; developer sourcing P3; sample source P4). Re-rendered. AI = editor under
+  direction, not author; user's judgment/voice preserved.
