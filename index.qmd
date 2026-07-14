@@ -1,0 +1,42 @@
+---
+title: "Verasight Data Scientist Case Study"
+---
+
+This site presents my submission for the Verasight Data Scientist case study. The analyses are
+written in **R** (with a small reusable helper toolbox in `utils/`), and each task has its own
+page — use the **Tasks** menu above, or the links below.
+
+The case study provided four data files: a sample of registered panelists, one recent survey's
+responses, a question-reference file, and an aggregate response database spanning many 2024
+Verasight projects.
+
+## The four tasks
+
+#### [Task 1: Weighted crosstabs](reports/task1.qmd)
+
+A single, reusable, documented R function that builds **weighted proportion tables** (survey
+outcome × demographic) with question wording attached — built with the `survey` package and
+designed so a teammate could run it on a *different* Verasight survey without editing its
+internals.
+
+#### [Task 2: Response density](reports/task2.qmd)
+
+How concentrated survey responses are among panelists — the smallest share of users who account
+for 50% of responses, overall and restricted to recent registrants, with interactive
+concentration (Lorenz) curves.
+
+#### [Task 3: Fraud detection](reports/task3.qmd)
+
+A design memo for a tiered workflow to flag potentially **fraudulent open-ended responses**:
+cheap deterministic signals → LLM classification on the flagged subset → human review, validated
+against labeled data and corroborated with closed-ended answers and paradata.
+
+#### [Task 4: Project scoping](reports/task4.qmd)
+
+Scoping questions and a time-intensity **ranking** across four hypothetical Verasight projects.
+
+## Approach & AI use
+
+Code lives in `code/` and `utils/`; write-ups in `reports/`. Generative AI was used throughout —
+the accompanying `ai_memo.md` documents the models, tools, harnessing, representative prompts,
+verification methods, and cases where the AI's output was corrected.

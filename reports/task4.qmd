@@ -105,7 +105,7 @@ format:
 | 3 | Project 1: Nationally-representative survey |
 | 4 | Project 2: Wyoming voter survey |
 
-### 1. Project 3: AI software-developer survey *(most time-intensive)*
+### 1. Project 3: AI software-developer survey 
 
 I assume the responsibility to develop a sampling frame and benchmarks will be solely ours and constructing a weighting scheme for a population with no frame is open-ended methodological work that will require some time, skill, and creativity. It will require a comprehensive literature review to determine what potential data is out there, a complicated benchmark construction, lots of sensitivity checks, and a defensible writeup that will take time and probably require the eyes of other data scientists. While the timeframe is shorter than Project 4's longitudinal survey, the detailed methodological work on this will require more effort.
 
@@ -123,6 +123,6 @@ Normally, I would assume projects using the internal Verasight data to be less d
 
 I assume the topline & crosstab report and the scrutiny it will receive to be the second biggest time requirement here. I assume the client will come back with mostly generic demographic requirements for the crosstab but have one or two more difficult requirements (maybe a hard to reach demographic or one with low Ns). Since the client is affiliated with a conference, I'll assume there'll be some degree of the intended audience that will have some survey experience and want a more detailed than normal topline & crosstab report, so more time will have to be devoted here than in a normal one. If the client gives me full control over editing their questions and allows me to use my judgment to edit them (as long as I maintain the spirit of the question), that could shave off some of the work here.
 
-### 4. Project 2: Wyoming voter survey *(least time-intensive)*
+### 4. Project 2: Wyoming voter survey
 
 I assume this will come back as a standard state voter poll with fewer complications--standard demographic quotas and the client wants to define "voter" as anyone who voted in any of the last three elections. The bulk of the work will come from cleaning the voter file and building a sample frame, but the fielding will be straightforward enough -- assuming the client hands us usable contact info (phones/addresses) or a panel match, since reaching voters off a bare file would make it noticeably harder. If I need to obtain and clean the voter file from scratch or if the demographic requirements are more complicated and hard to field, I could see this requiring more effort.

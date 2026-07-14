@@ -1,0 +1,33 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - reports/task1.qmd
+    - reports/task2.qmd
+    - reports/task3.qmd
+    - reports/task4.qmd
+
+website:
+  title: "Verasight DS Case Study"
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Home"
+      - text: "Tasks"
+        menu:
+          - href: reports/task1.qmd
+            text: "Task 1: Weighted crosstabs"
+          - href: reports/task2.qmd
+            text: "Task 2: Response density"
+          - href: reports/task3.qmd
+            text: "Task 3: Fraud detection"
+          - href: reports/task4.qmd
+            text: "Task 4: Project scoping"
+  page-footer: "Verasight Data Scientist Case Study"
+
+format:
+  html:
+    theme: litera
+    toc: true
+    embed-resources: true
