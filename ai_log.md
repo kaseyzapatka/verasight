@@ -126,6 +126,29 @@ hand-check before accepting.
   - Viz: `ggplotly()` failed on an installed plotly/ggplot2 version mismatch
     (`scales_transform_df`); rebuilt the figure in **native `plot_ly`** instead. Added cleanup
     of the leftover `_files` libdir so the HTML stays a clean single self-contained file.
+- [task 2] User edits after review: (1) committed checkpoint first; (2) **updated plotly
+  4.10.1 → 4.12.0** so `ggplotly()` works, then switched back to ggplot2+ggplotly to stay in
+  the tidyverse (user preference); (3) refactored the metric + figure code into a reusable
+  `utils/density.R` (clean_responses, concentration_curve, min_user_share_for, gini,
+  density_figure); (4) built **two** figures (all responders + last-90-day registrants) with
+  axes stepping by 10 and the **50% threshold highlighted** (red marker + guide lines);
+  (5) wrote `reports/task2.qmd` explainer (assignment quote, answers table, both figures
+  inline, assumptions). Rendered + verified: tickvals 0..100 by 10, highlight present, both
+  answers (15.7% / 28.3%). | accepted.
+- [task 2] Ran the **adversarial-tester** on utils/density.R + code/02. Verdict PASS, no
+  material defects. Confirmed: synthetic known-answers (1-of-10 holds 50% → 10%; one-holds-all
+  → 1/N; even → 50%); headline numbers reproduce exactly via an independent code path
+  (15.6697%, 28.3070%); Gini sane; NA-drop/dedupe/ties/90-day-relative logic all correct;
+  figures have step-10 axes, a distinct red 50% highlight, and are self-contained. Only
+  non-triggered nits: empty/all-zero input → silent NA/NaN and NA-in-vector silently dropped
+  by sort() (not reachable from the count()-based pipeline).
+- [task 2] User follow-ups: (1) clarified NA handling — confirmed the only relevant NAs are on
+  survey IDs (43,692), dropped up front by clean_responses (cleaned data is fully NA-free); on
+  the user's preference for no silent behavior, added a `.check_counts` guard so the density
+  helpers error loudly on empty/NA/negative/zero-sum input. (2) Fixed report captions — chunk
+  labels `fig-*` made Quarto expect a caption; missing `fig-cap` rendered `?(caption)`. Added
+  proper fig-cap to both figures. (3) Rewrote the "universe/denominator" paragraph for clarity
+  and made the 90-day cohort statement explicit (on/after cutoff through the reference date).
 
 ### Task 3
 

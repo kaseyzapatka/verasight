@@ -61,6 +61,19 @@ glimpse(resp_db)
 p("\ndate range:", format(min(resp_db$response_date)), "->", format(max(resp_db$response_date)))
 p("distinct users in DB:", n_distinct(resp_db$ID), "| surveys:", n_distinct(resp_db$survey))
 p("duplicate rows in DB:", sum(duplicated(resp_db)))
+resp_db |> 
+  #distinct(ID, survey) |> 
+  distinct(ID) |> 
+  print(n=100)
+
+resp_db |> 
+  arrange(ID) |> 
+  print(n=10)
+
+resp_db |> 
+  arrange(survey) |> 
+  print(n=10)
+
 
 p("\n-- responses-per-user distribution (the 'density' raw material) --")
 per_user <- resp_db %>% count(ID, name = "n_responses")
