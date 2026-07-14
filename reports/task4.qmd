@@ -1,0 +1,116 @@
+---
+title: "Task 4 — Project Scoping & Prioritization"
+subtitle: "Verasight Data Scientist Case Study"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    theme: litera
+    highlight-style: github
+---
+
+> **Scaffold.** The project descriptions and instructions below are quoted verbatim from the
+> *2026 Data Scientist Case Study* (Task 4) for reference. Write your responses in the
+> **"My questions"** callouts (Part 1) and the ranking table (Part 2); delete this note when
+> finished.
+
+> **Task 4 (preamble).** "Included below are descriptions of 4 types of projects you could work
+> on as a Data Scientist at Verasight. Read through the descriptions and then answer the
+> questions below."
+>
+> *— 2026 Data Scientist Case Study, Task 4*
+
+# Part 1 — Scoping questions
+
+> "For each project, identify the 1-3 of the most important questions you would ask before
+> beginning work. Your questions should help you clarify the project scope, the goals of the
+> client, assess feasibility, and understand the specific data needs of the project. Questions
+> may cover (but are not limited to) sampling frame creation, weighting or analysis
+> requirements, deliverables, timelines, or client expectations. Assume you have the resources
+> and training you need to complete individual tasks successfully — ask questions to help
+> understand the *scope and content* of the projects, not on the mechanics of how to execute
+> the tasks themselves."
+>
+> *— 2026 Data Scientist Case Study, Task 4, Part 1*
+
+## Project 1 — Nationally-representative survey (3,000 US adults)
+
+> "A nationally-representative survey of 3,000 US adults fielded from the Verasight panel.
+> Questions were submitted by conference attendees. In addition to the standard deliverables of
+> raw data, codebook, and survey weights, this project also requires a public-facing topline &
+> crosstab report. Fielding & deliverable preparation should take 2 weeks."
+>
+> *— 2026 Data Scientist Case Study, Task 4, Project 1*
+
+::: {.callout-note title="My questions (1–3)"}
+1. *…*
+2. *…*
+3. *…*
+:::
+
+## Project 2 — Wyoming voter survey (1,500 voters)
+
+> "A survey of 1,500 voters in Wyoming sampled from voter file records. The sales team notes
+> that the client may have demographic quotas. Fielding should take 3 weeks."
+>
+> *— 2026 Data Scientist Case Study, Task 4, Project 2*
+
+::: {.callout-note title="My questions (1–3)"}
+1. *…*
+2. *…*
+3. *…*
+:::
+
+## Project 3 — AI software-developer survey (300 developers)
+
+> "A survey of 300 software developers who program with AI models. The client would like to be
+> able to weight the survey results to the population of eligible software developers. The
+> timeline is 6 weeks to prepare and 4 weeks to field."
+>
+> *— 2026 Data Scientist Case Study, Task 4, Project 3*
+
+::: {.callout-note title="My questions (1–3)"}
+1. *…*
+2. *…*
+3. *…*
+:::
+
+## Project 4 — Longitudinal survey of working women (1,000, 4 waves)
+
+> "A longitudinal survey of 1,000 working women. There are 4 waves, each a month apart.
+> Fielding should start tomorrow."
+>
+> *— 2026 Data Scientist Case Study, Task 4, Project 4*
+
+::: {.callout-note title="My questions (1–3)"}
+1. *…*
+2. *…*
+3. *…*
+:::
+
+# Part 2 — Ranking by time intensity
+
+> "Now assume you receive answers to the questions you included above. Given what you know now,
+> please rank these projects from 1-4 in order of how time intensive you think they will be for
+> you as a Data Scientist. The project you rank first should be the project you expect to take
+> the most of your time, and the project you rank 4th should be the project you expect to take
+> the least amount of your time. Be explicit about the assumptions you make and provide
+> reasoning for the ranking. (Note: There are no right or wrong answers for this question — we
+> want to get insight into your thought process.)"
+>
+> *— 2026 Data Scientist Case Study, Task 4, Part 2*
+
+**Ranking** (1 = most time-intensive, 4 = least):
+
+| Rank | Project | Reasoning |
+|:---:|---|---|
+| 1 | *…* | *…* |
+| 2 | *…* | *…* |
+| 3 | *…* | *…* |
+| 4 | *…* | *…* |
+
+::: {.callout-note title="Assumptions behind my ranking"}
+- *…*
+- *…*
+:::
