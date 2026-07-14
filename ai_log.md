@@ -110,6 +110,23 @@ hand-check before accepting.
 
 ### Task 2
 
+- [task 2] Built `code/02_task2_density.R` (Lorenz-style concentration metric + interactive
+  HTML curve). Numbers verified against an independent scratch computation. | accepted with
+  key corrections/decisions:
+  - **Major data-quality find:** 23.3% of rows (43,692) have a **missing user ID**. `count(ID)`
+    lumped them into one NA "user" with 40,464 responses = a spurious 22%-of-all-responses
+    "mega-account." Excluded NA-ID rows as unattributable (can't assign to a panelist). This
+    single fix moved the 2.1 answer from ~9.9% to 15.67%.
+  - Filename: brief said `response-db.rds`; actual is `data/full-response-db.rds`.
+  - De-duplicated 3,863 exact-duplicate rows; stated the responders vs. all-registered
+    denominator choice (reported both). "Last 90 days" = relative to max response_date
+    (2024-09-09), stated.
+  - Results: 2.1 = 15.67% (Gini 0.54); 2.2 = 28.31% among recent registrants (Gini 0.30);
+    all-registered universe = 4.82%.
+  - Viz: `ggplotly()` failed on an installed plotly/ggplot2 version mismatch
+    (`scales_transform_df`); rebuilt the figure in **native `plot_ly`** instead. Added cleanup
+    of the leftover `_files` libdir so the HTML stays a clean single self-contained file.
+
 ### Task 3
 
 ### Task 4
