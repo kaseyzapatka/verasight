@@ -1,0 +1,15 @@
+# Internal scaffolding — not part of the take-home submission
+notes/plan.md
+notes/jobad.md
+notes/qa.md
+notes/prompt-capture.log
+# (notes/style.md IS tracked — it documents the deliverable viz style)
+
+# Regenerable rendered outputs (produced by code/ + reports/*.qmd)
+# The rendered report reports/task1.html IS tracked as a viewable deliverable.
+output/
+
+# Scratch / OS noise
+.DS_Store
+scratch/
+*.tmp

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"\\n===== \" + (now|todate) + \" =====\\n\" + (.prompt // \"\")' >> \"${CLAUDE_PROJECT_DIR:-.}/notes/prompt-capture.log\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
