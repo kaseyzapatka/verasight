@@ -5,6 +5,12 @@ notes/qa.md
 notes/prompt-capture.log
 # (notes/style.md IS tracked — it documents the deliverable viz style)
 
+# Provided input data (not our work to redistribute)
+data/
+
+# Quarto build cache
+/.quarto/
+
 # Scratch / OS noise
 .DS_Store
 scratch/
