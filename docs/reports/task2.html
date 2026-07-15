@@ -4440,6 +4440,32 @@ vertical-align: -.125em;
 }</script>
 
 
+<style type="text/css">
+pre {
+background-color: #eef1f4 !important; 
+border: 1px solid #cfd6dd;
+border-left: 4px solid #2e6e8e; 
+border-radius: 5px;
+padding: 0.85em 1.1em;
+}
+
+div.sourceCode {
+background-color: transparent !important;
+border: none;
+}
+
+pre:not(.sourceCode),
+pre:not(.sourceCode) code {
+white-space: pre-wrap;
+overflow-wrap: anywhere;
+}
+
+code:not(pre code) {
+background-color: #eef1f4;
+padding: 0.1em 0.35em;
+border-radius: 3px;
+}
+</style>
 </head>
 
 <body class="nav-fixed">
@@ -4540,13 +4566,13 @@ vertical-align: -.125em;
 </blockquote>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
-<p>“Density” here is a <strong>concentration</strong> question, so I treat it as a <strong>Lorenz curve</strong>: sort users from most to least active, accumulate their responses, and read off what share of users it takes to reach a given share of responses. The metric for parts 1–2 is the <em>smallest</em> share of users (most active first) whose responses reach 50% of the total. All logic lives in a small reusable helper, <a href="../utils/density.R"><code>utils/density.R</code></a>.</p>
+<p>“Density” here is a concentration question, so I treat it as a <strong>Lorenz curve</strong>: sort users from most to least active, accumulate their responses, and read off what share of users it takes to reach a given share of responses. The metric for parts 1–2 is the <em>smallest</em> share of users (most active first) whose responses reach 50% of the total. All logic lives in a small reusable helper, <a href="../utils/density.R"><code>utils/density.R</code></a>.</p>
 </section>
 <section id="data-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="data-preparation">Data preparation</h2>
 <p>Before counting, two clean-ups materially change the answer:</p>
 <ul>
-<li><strong>Missing IDs.</strong> 23% of rows (43,692) have <strong>no user ID</strong>. These are unattributable to any panelist, so they are <strong>excluded</strong> — a naive <code>count(ID)</code> would otherwise lump them into one phantom “user” holding ~22% of all responses.</li>
+<li><strong>Missing IDs.</strong> 23% of rows (43,692) have no user ID. These are unattributable to any panelist, so they are excluded — a naive <code>count(ID)</code> would otherwise lump them into one phantom “user” holding ~22% of all responses.</li>
 <li><strong>Duplicates.</strong> 3,863 exact-duplicate rows (same ID / survey / date) are de-duplicated.</li>
 </ul>
 <p><strong>Which users count as the denominator?</strong> “Users in the database” is ambiguous, and the choice changes the answer:</p>
@@ -4581,7 +4607,7 @@ vertical-align: -.125em;
 </tbody>
 </table>
 <p><em>Task 2.2 reference date = the latest date in the data (2024-09-09); therefore, the 90-day cohort comprises registrations on or after 2024-06-11 through 2024-09-09.</em></p>
-<p><strong>Reading the result:</strong> responses are moderately concentrated — the most active 15.7% of responders produce half of all responses. <strong>New panelists are much less concentrated</strong> (28.3% needed for 50%): concentration builds with tenure as heavy responders accumulate history.</p>
+<p><strong>Interpreting the results:</strong> responses are moderately concentrated — the most active 15.7% of responders produce half of all responses. <strong>New panelists are less concentrated</strong> (28.3% needed for 50%): concentration builds with tenure as heavy responders accumulate history.</p>
 </section>
 <section id="concentration-curves" class="level2">
 <h2 class="anchored" data-anchor-id="concentration-curves">Concentration curves</h2>
@@ -4611,7 +4637,7 @@ vertical-align: -.125em;
 <li><strong>File:</strong> brief said <code>response-db.rds</code>; actual file is <code>data/full-response-db.rds</code>.</li>
 <li><strong>Unattributable rows</strong> (missing ID) and <strong>exact duplicates</strong> are dropped (above).</li>
 <li><strong>Universe</strong> = responders; the all-registered alternative is reported for contrast.</li>
-<li><strong>“Last 90 days”</strong> is relative to the latest date in the data, not today.</li>
+<li><strong>“Last 90 days”</strong> is relative to the latest date in the data (2024-09-09,), not today.</li>
 <li><strong>Ties / zero-response users:</strong> users are ordered most-active-first and the cumulative curve is monotonic, so the smallest user count reaching a target is well defined; zero-response users appear only in the all-registered contrast.</li>
 </ul>
 

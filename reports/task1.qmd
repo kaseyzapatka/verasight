@@ -41,8 +41,8 @@ proportion tables** — one for each survey **outcome × demographic** — with 
 wording attached above its table. The execution script
 [`code/01_task1_crosstabs.R`](../code/01_task1_crosstabs.R) runs it on survey `2024-054`.
 
-The design goal was the grading bar: *a teammate can run it on a different Verasight survey
-without editing any internals.* Everything survey-specific is an **argument**, not hardcoded.
+I designed it to so a teammate could use it on a different Verasight survey
+without editing any internals. Everything survey-specific is an argument, not hardcoded.
 
 ## How it works
 
@@ -58,9 +58,9 @@ At a high level:
 - **Safe by default.** It handles missing values, keeps empty response levels at 0%, hard-skips
   continuous columns like raw `age`, and errors on negative weights.
 
-The function carries full **roxygen documentation** (`@param` / `@return` / `@examples`), so it
-could drop straight into a Verasight analysis package as a documented, reusable helper rather
-than living as a one-off script.
+The specified the function to use full **roxygen documentation** (`@param` / `@return` / `@examples`), so we 
+could drop it straight into a Verasight analysis package as a documented, reusable helper rather
+than living as a one-off script. This shows my generalized and forward thinking and approach.
 
 ## Example: survey 2024-054
 
@@ -78,7 +78,7 @@ tables[["q28__age_group4"]]$gt
 
 To confirm the numbers are right — and that the **`survey` package** (not an unweighted
 count) is doing the work — I independently recompute **one cell** of the table above by two
-other paths and compare:
+other paths and compare (I did a few more as well but only show one here):
 
 ```{r manual-validation}
 #| code-fold: false
@@ -112,10 +112,9 @@ design — not a plain frequency count.
 
 ## It works on a different colleague's survey
 
-To show portability, here is a **synthetic survey a colleague might bring** — completely
+To show portability, I test the function using a synthetic survey a colleague might bring that has completely
 different column names (`user_id`, `wt`, `item_1`/`item_2`, `region2`, `agegrp`) and a
-differently-named reference. The function is driven **entirely by arguments; nothing inside
-it changes.**
+differently-named reference. The function is driven entirely by arguments; nothing inside it changes.
 
 ```{r synthetic-colleague}
 set.seed(42)

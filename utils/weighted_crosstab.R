@@ -3,25 +3,24 @@
 # Source with: source("utils/weighted_crosstab.R")
 #
 # Dependencies: survey (weighted estimation), gt (display), tibble/tidyselect (data frames).
-# Namespaces are checked at call time so sourcing this file stays cheap.
+# Namespaces are checked at call time rather than on load.
 
 #' Weighted proportion crosstabs for survey outcomes by demographics
 #'
 #' For every survey question x demographic pair, this builds a table of weighted proportions
-#' where each demographic column sums to 100% down the response options — the standard
-#' "crosstab" deliverable. It uses complex-survey weights via the \code{survey} package and
-#' attaches each question's wording as the table title.
+#' where each demographic column sums to 100% down the response options. It uses
+#' complex-survey weights via the \code{survey} package and attaches each question's wording
+#' as the table title.
 #'
-#' It is built to be reused: point it at any Verasight survey and it works out which columns
-#' are questions and which are demographics on its own, or you can tell it explicitly. You
-#' never edit the function to run it on a new dataset — you only change arguments.
+#' Column roles can be inferred (which columns are questions, which are demographics) or passed
+#' explicitly. Running it on a new dataset means changing arguments, not editing the function.
 #'
 #' @param data A data frame / tibble of survey responses (one row per respondent).
 #' @param outcomes Character vector of outcome (question) columns. If \code{NULL} (default),
 #'   inferred as columns whose names match \code{outcome_pattern}.
 #' @param demographics Character vector of demographic columns. If \code{NULL} (default),
 #'   inferred as the categorical (factor/character) columns among those that are not outcomes,
-#'   \code{id_col}, or \code{weight_col} — continuous numerics such as a raw \code{age} column
+#'   \code{id_col}, or \code{weight_col}; continuous numerics such as a raw \code{age} column
 #'   are skipped. Pass explicitly to override.
 #' @param weight_col Name of the survey-weight column. Default \code{"weight"}.
 #' @param id_col Name of the respondent-id column to exclude from analysis. Default
@@ -33,9 +32,8 @@
 #' @param outcome_pattern Regex used to infer outcome columns when \code{outcomes} is
 #'   \code{NULL}. Default \code{"^q[0-9]+$"}.
 #' @param max_categories Maximum distinct values a demographic may have. Columns exceeding it
-#'   are treated as continuous/high-cardinality: skipped during inference, and an
-#'   \emph{informative error} if passed explicitly (rather than producing a huge table).
-#'   Default \code{20}.
+#'   are treated as continuous/high-cardinality: skipped during inference, and an error if
+#'   passed explicitly (rather than producing a huge table). Default \code{20}.
 #' @param na_demographic How to treat respondents with a missing demographic value:
 #'   \code{"drop"} (default) removes them from that table; \code{"keep"} shows them as an
 #'   explicit \code{"(Missing)"} column.
@@ -47,8 +45,7 @@
 #' come from \code{svytable()} and are normalized within each demographic column. Missing
 #' outcome responses are excluded so percentages are taken among those who answered; every
 #' defined response level is retained (a level with no responses still shows at 0%). Because
-#' each column is rounded independently, a column may sum to 99–101% — matching the target
-#' example.
+#' each column is rounded independently, a column may sum to 99–101%.
 #'
 #' @return A named list keyed \code{"<outcome>__<demographic>"}. Each element is a list with
 #'   \code{outcome}, \code{demographic}, \code{question} (wording or variable name),
@@ -104,10 +101,10 @@ weighted_crosstab <- function(data,
   }
   if (is.null(demographics)) {
     candidates <- setdiff(names(data), c(outcomes, id_col, weight_col))
-    # A column is a usable demographic only if it is categorical (factor/character) AND
-    # low-cardinality (<= max_categories distinct values). This HARD-SKIPS continuous
-    # variables (e.g. a raw `age` column) and high-cardinality junk (free text, IDs), which
-    # would otherwise explode into dozens of meaningless columns. Override via `demographics`.
+    # A column is a usable demographic only if it is categorical (factor/character) and
+    # low-cardinality (<= max_categories distinct values). This skips continuous variables
+    # (e.g. a raw `age` column) and high-cardinality columns (free text, IDs), which would
+    # otherwise expand into dozens of columns. Override via `demographics`.
     usable <- vapply(candidates, function(v) {
       x <- data[[v]]
       (is.factor(x) || is.character(x)) &&
@@ -224,7 +221,7 @@ weighted_crosstab <- function(data,
   props
 }
 
-#' Format one proportion table as a styled gt table (per notes/style.md).
+#' Format one proportion table as a styled gt table.
 #' @noRd
 .wc_gt <- function(props, question, demographic, digits) {
   navy       <- "#1F2A44"

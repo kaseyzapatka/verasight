@@ -61,9 +61,9 @@ n_dem <- length(unique(vapply(tables, `[[`, character(1), "demographic")))
 cat(sprintf("Built %d tables (%d outcomes x %d demographics).\n",
             length(tables), n_out, n_dem))
 
-# ---- show a representative table (mirrors the case-study example: q x age) ---
+# ---- show a representative table: q28 by age group --------------------------
 # Pick the q28-by-age table if present, else fall back to the first table so this
-# demo never errors when run on a different survey.
+# runs without error on a different survey.
 example_key <- if ("q28__age_group4" %in% names(tables)) "q28__age_group4" else names(tables)[1]
 example <- tables[[example_key]]
 cat("\nExample table [", example_key, "]\n", sep = "")
