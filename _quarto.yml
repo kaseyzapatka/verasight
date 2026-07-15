@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  # Copy the source scripts into the site so the "defined in utils/..." links in
+  # the write-ups resolve on the deployed site (docs/reports/ -> ../utils, ../code).
+  resources:
+    - utils/*.R
+    - code/*.R
   render:
     - index.qmd
     - reports/task1.qmd
