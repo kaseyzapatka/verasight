@@ -7,6 +7,7 @@ project:
     - reports/task2.qmd
     - reports/task3.qmd
     - reports/task4.qmd
+    - ai_memo.md
 
 website:
   title: "Verasight DS Case Study"
@@ -24,6 +25,8 @@ website:
             text: "Task 3: Fraud detection"
           - href: reports/task4.qmd
             text: "Task 4: Project scoping"
+      - href: ai_memo.md
+        text: "AI Memo"
   page-footer: "Verasight Data Scientist Case Study"
 
 format:
