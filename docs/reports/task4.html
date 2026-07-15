@@ -4440,6 +4440,32 @@ vertical-align: -.125em;
 }</script>
 
 
+<style type="text/css">
+pre {
+background-color: #eef1f4 !important; 
+border: 1px solid #cfd6dd;
+border-left: 4px solid #2e6e8e; 
+border-radius: 5px;
+padding: 0.85em 1.1em;
+}
+
+div.sourceCode {
+background-color: transparent !important;
+border: none;
+}
+
+pre:not(.sourceCode),
+pre:not(.sourceCode) code {
+white-space: pre-wrap;
+overflow-wrap: anywhere;
+}
+
+code:not(pre code) {
+background-color: #eef1f4;
+padding: 0.1em 0.35em;
+border-radius: 3px;
+}
+</style>
 </head>
 
 <body class="nav-fixed">
@@ -4486,6 +4512,10 @@ vertical-align: -.125em;
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../ai_memo.html" rel target>
+ <span class="menu-text">AI Memo</span></a>
+  </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -4555,7 +4585,7 @@ My questions (1–3)
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><strong>The questions submitted by conference attendees</strong> (I’m assuming I’d know the conference from my interactions with the client/sales teams (e.g., academic conference, a specific trade union, etc.)): <em>The first thing I’d want to know is the type and format of questions that conference attendees have submitted. For example, do they have a coherent theme, how many are there, how many are free-response (which will be harder to analyze)? Are these very technical or are they meant for laity? Who has authority to edit them if necessary and how long might that take (if not me) to get them ready for fielding? And roughly how long will the final questionnaire run – I’d want a sense of the total length so it’s not too much of a burden on respondents and so it’s realistic to finalize and field in 2 weeks.</em></li>
+<li><strong>The questions submitted by conference attendees</strong> (I’m assuming I’d know the conference from my interactions with the client/sales teams (e.g., academic conference, a specific trade union, etc.)): <em>The first thing I’d want to know is the type and format of questions that conference attendees have submitted. For example, do they have a coherent theme, how many are there, how many are free-response (which will be harder to analyze)? Are these very technical or are they meant for laity? Who has authority to edit them if necessary and how long might that take (if not me) to get them ready for fielding? And roughly how long will the final questionnaire run – I’d want a sense of the total length. That feeds a bigger feasibility question: is the 2 weeks firm, and does that window cover just fielding – or fielding <strong>plus</strong> the public report? Two weeks to lock a jargon-heavy questionnaire, field 3,000, and turn a scrutiny-ready public crosstab report is aggressive, so I’d want to know where the hard deadline actually sits.</em></li>
 <li><strong>Cross-tab variables and required demographics:</strong> <em>A public-facing topline &amp; crosstab report requires a bit more preparation and understanding of the scrutiny they’ll face when made public. So I’d be concerned with knowing the most important demographics they require for fielding so I can reserve time to build out the topline &amp; crosstab reports. Also, what are the cross-tab variables? Will they be all the key demographics or only a subset? What are the demographic requirements–e.g., employment status, ethnoracial distribution, political identification, educational attainment, etc.? I’d want to see if there were any hard to reach populations that might be hard to get in time or might create low Ns and therefore be unable to publish on a public-facing topline.</em></li>
 <li><strong>More details on the public-facing topline &amp; crosstab report:</strong> <em>A public-facing topline &amp; crosstab report can come under varying levels of scrutiny depending on the intended audience, so I’d like to know who the client expects to read these findings/reports–e.g., news organizations, academic methodologists, the general public? This will also help me know the level of detail to include so it’s readable for the intended audience. If the questions are coming from conference participants, it could be commissioned by an organization that might have specific transparency and disclosure requirements, so I’d want to ask more about those. They might also have specific requirement criteria that might not have come up in the demographics conversation (e.g., diversity of individuals with specific disabilities, access to modes of communication, etc.)</em></li>
 </ol>
@@ -4580,7 +4610,7 @@ My questions (1–3)
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><strong>Follow up on quota samples:</strong> <em>The note that “the client may have demographic quotas” is a bit vague, so I’d want more clarity on the quotas. Are they pretty standard and easy to fill or will they be more difficult and more granular? Since the sample is coming from a voting file, will there be partisan quotas–in Wyoming it might be much harder to find a 64-year-old college-educated Democrat than their Republican counterpart.</em></li>
-<li><strong>Voter file:</strong> <em>I’d want to ask more about the voter file requirements? Who has the file, what is the source? Who will be doing the cleaning (even if they do the cleaning, I’d prob want to do my own quick quality assessment)? Also, how are we getting the sample? This framing implies the client is providing the dataset, so what will we merge it with to get a sample frame? And how do we actually reach these voters – a voter file gives us records, not a way to contact them, so do we have phones/addresses/emails, or are we matching to a panel?</em></li>
+<li><strong>Voter file &amp; deliverables:</strong> <em>I’d want to ask more about the voter file requirements? Who has the file, what is the source? Who will be doing the cleaning (even if they do the cleaning, I’d prob want to do my own quick quality assessment)? Also, how are we getting the sample? This framing implies the client is providing the dataset, so what will we merge it with to get a sample frame? And how do we actually reach these voters – a voter file gives us records, not a way to contact them, so do we have phones/addresses/emails, or are we matching to a panel? And unlike Project 1, no deliverables are specified here – do they want just cleaned data plus a weight, or a topline/crosstab report too? That one answer changes the scope quite a bit.</em></li>
 <li><strong>What defines a voter:</strong> <em>“Voter” can mean multiple things: voted in the last federal election, voted in one of the last 4 elections, simply registered, etc. Does the client have any stipulations around this?</em></li>
 </ol>
 </div>
@@ -4605,7 +4635,7 @@ My questions (1–3)
 <ol type="1">
 <li><strong>Benchmarks and sample frame:</strong> <em>What benchmarks exist that we could use? There’s no Census of software developers who build AI to define the population benchmarks. Perhaps there might be some Stack Overflow software developer survey or a niche BLS survey we could start from? Does the client have a population benchmark in mind already as a starting point? Is the “weight the survey results to the population of eligible software developers” negotiable if we have to weight to a soft target instead (e.g., using a Stack Overflow developer survey that might have problems instead of a more reliable survey like the US Census)? And once we settle on a benchmark, how are we actually sourcing the 300 developers – do we have enough of them on the Verasight panel or are we recruiting externally, and what’s the incidence of finding qualified AI devs?</em></li>
 <li><strong>Defining eligibility:</strong> <em>How is the client defining eligibility here–full-time employed, working for specific companies or in specific industries? Are they developing a tool that uses AI or are they training an AI model? Are there regional, demographic, or skill requirements (e.g., background in CS, knows C++ vs Python, has a PhD, etc.)?</em></li>
-<li><strong>Content of the survey:</strong> <em>The content of this survey seems not to have been developed – what will this be about? What kinds of questions will be asked? Who will prepare them? Will they be free response?</em></li>
+<li><strong>Content of the survey:</strong> <em>The content of this survey seems not to have been developed – what will this be about? What kinds of questions will be asked? Who will prepare them? Will they be free response? And what’s the final deliverable – just the weighted dataset, or a written methodology defending how we weighted to a population with no clean frame? The latter is a much bigger lift.</em></li>
 </ol>
 </div>
 </div>
@@ -4627,7 +4657,7 @@ My questions (1–3)
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><strong>Retention plan?</strong> <em>This is a longitudinal survey, meaning we’ll want to retain respondents over 4 waves. Retention will be the main concern for this project, so we’ll need clarity on the retention plan? How much will you pay/reimburse respondents? If that’s not enough, what wiggle room do we have to adjust it (i.e., what’s the budget)? What are the re-contact rules (how many times can we follow up with respondents)? Are there specific thresholds for retention? Is the 1,000 the wave 1 or wave 4 goal? What is time between waves? We may need to massively over-recruit to hit our goals.</em></li>
+<li><strong>Retention plan?</strong> <em>This is a longitudinal survey, meaning we’ll want to retain respondents over 4 waves. Retention will be the main concern for this project, so we’ll need clarity on the retention plan? How much will you pay/reimburse respondents? If that’s not enough, what wiggle room do we have to adjust it (i.e., what’s the budget)? What are the re-contact rules (how many times can we follow up with respondents)? Are there specific thresholds for retention? Is the 1,000 the wave 1 or wave 4 goal? What is time between waves? We may need to massively over-recruit to hit our goals. And on the analysis side, how do they want attrition handled – wave-specific weights, a balanced panel of wave-1 completers, or reweighting to correct for who drops out? That shapes both how much we over-recruit and how much post-fielding weighting lands on me.</em></li>
 <li><strong>“Fielding should start tomorrow.”?</strong> <em>“Fielding should start tomorrow” implies the screener is already proofed, the questionnaire is already done, the sample frame is already pulled, etc. So, my first concern is what “ready” really means here? Are there any adjustments that need to be made, are there any potential issues that we might encounter since we didn’t prepare all of the materials? And where is the sample even coming from – is this the Verasight panel, or a list of working women the client is providing?</em></li>
 <li><strong>Working women?</strong> <em>How is working women defined and what are the parameters? Are we looking for full-time or does part-time count? Is there a specific type of job or industry implied by “working” here? What do we do with respondents if their employment status changes during the study?</em></li>
 </ol>
@@ -4670,7 +4700,7 @@ My questions (1–3)
 </table>
 <section id="project-3-ai-software-developer-survey" class="level3">
 <h3 class="anchored" data-anchor-id="project-3-ai-software-developer-survey">1. Project 3: AI software-developer survey</h3>
-<p>I assume the responsibility to develop a sampling frame and benchmarks will be solely ours and constructing a weighting scheme for a population with no frame is open-ended methodological work that will require some time, skill, and creativity. It will require a comprehensive literature review to determine what potential data is out there, a complicated benchmark construction, lots of sensitivity checks, and a defensible writeup that will take time and probably require the eyes of other data scientists. While the timeframe is shorter than Project 4’s longitudinal survey, the detailed methodological work on this will require more effort.</p>
+<p>Assuming the answers to my questions above confirm the client has no benchmark in mind and can’t hand us a clean frame, the responsibility to develop a sampling frame and benchmarks falls solely to us, and constructing a weighting scheme for a population with no frame is open-ended methodological work that will require some time, skill, and creativity. It will require a comprehensive literature review to determine what potential data is out there, a complicated benchmark construction, lots of sensitivity checks, and a defensible writeup that will take time and probably require the eyes of other data scientists. While the timeframe is shorter than Project 4’s longitudinal survey, the detailed methodological work on this will require more effort.</p>
 <p>If the client has a specific idea of their target sample and a good dataset in mind for benchmarking (and is OK with weighting to soft targets), then this could be an easier lift.</p>
 </section>
 <section id="project-4-longitudinal-survey-of-working-women" class="level3">
@@ -4685,7 +4715,7 @@ My questions (1–3)
 </section>
 <section id="project-2-wyoming-voter-survey" class="level3">
 <h3 class="anchored" data-anchor-id="project-2-wyoming-voter-survey">4. Project 2: Wyoming voter survey</h3>
-<p>I assume this will come back as a standard state voter poll with fewer complications–standard demographic quotas and the client wants to define “voter” as anyone who voted in any of the last three elections. The bulk of the work will come from cleaning the voter file and building a sample frame, but the fielding will be straightforward enough – assuming the client hands us usable contact info (phones/addresses) or a panel match, since reaching voters off a bare file would make it noticeably harder. If I need to obtain and clean the voter file from scratch or if the demographic requirements are more complicated and hard to field, I could see this requiring more effort.</p>
+<p>Assuming my questions above come back confirming standard demographic quotas, usable contact info, and a straightforward “voter” definition (say, anyone who voted in any of the last three elections), this is a standard state voter poll with fewer complications. The bulk of the work will come from cleaning the voter file and building a sample frame, but the fielding will be straightforward enough – assuming the client hands us usable contact info (phones/addresses) or a panel match, since reaching voters off a bare file would make it noticeably harder. If I need to obtain and clean the voter file from scratch or if the demographic requirements are more complicated and hard to field, I could see this requiring more effort.</p>
 
 
 </section>

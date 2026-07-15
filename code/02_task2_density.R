@@ -75,11 +75,18 @@ per_recent <- db %>% filter(ID %in% recent_ids) %>% count(ID, name = "responses"
 share_50_recent <- min_user_share_for(per_recent$responses, 0.50)
 cat("=== Task 2.2 — restricted to registrations in the last 90 days ===\n")
 cat(sprintf("Reference date: %s | 90-day cutoff: %s\n", ref_date, cutoff))
-cat(sprintf("Recent registrants: %d | of whom responders: %d\n",
-            length(recent_ids), nrow(per_recent)))
+cat(sprintf("Recent registrants: %d | of whom responders: %d (%.0f%%)\n",
+            length(recent_ids), nrow(per_recent),
+            100 * nrow(per_recent) / length(recent_ids)))
 cat(sprintf("Smallest %% of recent responders for 50%% of responses: %.2f%% (%d of %d)\n",
             100 * share_50_recent, ceiling(share_50_recent * nrow(per_recent)), nrow(per_recent)))
-cat(sprintf("Gini coefficient: %.3f\n\n", gini(per_recent$responses)))
+cat(sprintf("Gini coefficient: %.3f\n", gini(per_recent$responses)))
+
+# Alternative universe: all recent registrants (incl. those who never responded).
+n_recent_zero <- length(recent_ids) - nrow(per_recent)
+cat(sprintf("(For contrast, all %d recent registrants incl. %d non-responders: %.2f%%)\n\n",
+            length(recent_ids), n_recent_zero,
+            100 * min_user_share_for(c(per_recent$responses, rep(0, max(n_recent_zero, 0))), 0.50)))
 
 # ===========================================================================
 # Task 2.3 — two concentration curves (10%-90% thresholds, 50% highlighted)
@@ -103,6 +110,7 @@ cat(sprintf("* Overall, the most active %.1f%% of responders account for half of
 cat("  responses (Gini ~0.54): heavy-tailed but not extreme (median 3/user, max 35).\n")
 cat("* Biggest signal is DATA QUALITY: ~23% of rows have no user ID and were excluded\n")
 cat("  (counting them as one 'user' would falsely imply 22% of responses = one account).\n")
-cat(sprintf("* New panelists are much LESS concentrated: %.1f%% of last-90-day registrants\n",
+cat(sprintf("* Recent registrants look less concentrated (%.1f%% for 50%%, Gini ~0.30), but\n",
             100 * share_50_recent))
-cat("  are needed for 50% (Gini ~0.30) — concentration builds with tenure.\n")
+cat("  that is largely mechanical: they've had little time to respond (median 1 each),\n")
+cat("  which compresses the distribution — not a clear behavioral signal.\n")

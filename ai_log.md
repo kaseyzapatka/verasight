@@ -177,3 +177,11 @@ hand-check before accepting.
   **in the user's voice** per project (questionnaire length P1; voter-contact mode P2 + a
   ranking caveat; developer sourcing P3; sample source P4). Re-rendered. AI = editor under
   direction, not author; user's judgment/voice preserved.
+- [task 2] interactive plotly figures 404'd on ../site_libs/htmlwidgets.js. Root cause: this is
+  a `type: website` Quarto project, and (a) rendering the single file (`quarto render
+  reports/task2.qmd`) writes broken ../site_libs/ widget links without creating the folder, while
+  (b) the global `embed-resources: true` conflicts with website widget handling. Fix: removed
+  `embed-resources` from _quarto.yml (added an explanatory comment) and rebuilt with a FULL
+  `quarto render`, which inlines the plotly/htmlwidgets deps into the page. Verified: task2.html
+  self-contained (inline lib + hover text, zero external refs); all 5 pages' local assets resolve.
+  Workflow rule: always `quarto render` (whole project), never single-file, for widget pages.

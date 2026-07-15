@@ -71,6 +71,7 @@ Only responses above the risk threshold go to the LLM, with the **question text,
 
 - **Model tiering to control cost:** a fast cheap model (**Claude Haiku**) triages; escalate only low-confidence or high-stakes cases to a stronger model (**Claude Sonnet/Opus**).
 - **Fixed rubric + structured output.** The model returns JSON: a category, an `is_fraud` flag, a **calibrated confidence**, a short rationale, and which signals it relied on. An explicit **`uncertain` / abstain** option routes to humans instead of guessing.
+- **Per-question rubric templating.** Question types differ — an opinion item ("most important issue"), a normative item ("qualities of a good leader"), and a survey-experience item ("problems completing this survey," itself a data-quality signal) each have their own expected-answer template so *off-topic* is judged against the right target. A later iteration builds these templates per question so the workflow generalizes cleanly across surveys.
 - **Stack:** the Anthropic SDK (Python/R); **prompt-cache the rubric** across the batch; log prompts + outputs by version.
 - **Guardrails:** the model judges *authenticity and effort*, never the respondent's opinion, dialect, or brevity-if-on-topic. Short, unpopular, or plainly written answers are **not** fraud.
 
@@ -99,7 +100,8 @@ Text signals get much stronger when independent, hard-to-fake metadata agrees �
 
 ## Validation
 
-- **Build a labeled gold set** across surveys and question types — human-adjudicated, stratified to include known fraud (past removals, seeded/honeypot responses, attention-check failures) and confirmed genuine.
+- **Build a labeled gold set** across surveys and question types — human-adjudicated, stratified to include known fraud (past removals, seeded/honeypot responses, attention-check failures) and confirmed genuine. On day one this is thin, so lean on seeded/honeypot cases and a small hand-labeled seed to set initial thresholds; the set grows with every human adjudication, so calibration gets easier with each iteration.
+- **Validity, not just accuracy.** Track the false-positive rate *by demographic subgroup* so the removal process doesn't quietly bias the surviving sample (e.g. disproportionately dropping older, non-native, or low-literacy respondents), which would distort weighted estimates.
 - **Metrics with the cost asymmetry front and center.** Report precision/recall/F1 *per category*, but choose the operating point on a **cost-weighted** basis: a false positive (dropping a real respondent) is weighted far more heavily than a false negative that the human tier can still catch. Show the confusion matrix and a precision–recall curve; pick the threshold, don't inherit it.
 - **Calibrate the LLM's confidence** (reliability diagram); if "0.9" isn't right ~90% of the time, recalibrate before trusting it for routing.
 - **Estimate recall** you can't see directly by **seeding known-fraud** responses and measuring catch rate.
@@ -112,9 +114,11 @@ Text signals get much stronger when independent, hard-to-fake metadata agrees �
 - **Drift watch:** fraud evolves — especially AI-generated text. Track signal distributions, LLM–signal agreement, and overturn rate over time; alarm on shifts.
 - **Version & shadow-test:** version rubric/prompts/thresholds; run a new version in **shadow mode** (scores but doesn't act) against the current one before it can remove anyone.
 - **Error analysis cadence:** a standing review of false pos/neg to feed the next iteration.
+- **Panel-level reputation (across surveys).** Because panelists recur across surveys, templated bot answers that look normal in one survey become obvious across dozens. A per-panelist reputation score over response history could be useful in future iterations once the per-response pipeline is stable.
 
 ## Risks & limitations
 
 - **AI-text detection is unreliable.** Perplexity/"AI detector" signals have high false-positive rates and penalize non-native and plain writing. Keep them as *soft* inputs, never a sole basis for removal.
 - **False-positive harm is real:** dropping genuine respondents damages data quality, panel trust, and retention — hence corroboration + human sign-off on every removal.
+- **PII & data governance.** Open-ends occasionally contain personal information, and Tier 2 ships respondent text to an external LLM API — we'll have to consider how to redact before sending
 - **Adversaries adapt;** treat this as an evolving system, not a one-time filter — the iteration loop is the point.

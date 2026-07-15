@@ -1,0 +1,33 @@
+/* Set off fenced code blocks so they don't blend into the page background —
+   e.g., the verbatim prompt blocks on the AI Memo page. Applies site-wide. */
+
+pre {
+  background-color: #eef1f4 !important;   /* light blue-gray tint */
+  border: 1px solid #cfd6dd;
+  border-left: 4px solid #2e6e8e;         /* brand accent bar on the left */
+  border-radius: 5px;
+  padding: 0.85em 1.1em;
+}
+
+/* Highlighted code (```r etc.) is wrapped in div.sourceCode; keep the styling on
+   the <pre> and make the wrapper transparent so borders don't double up. */
+div.sourceCode {
+  background-color: transparent !important;
+  border: none;
+}
+
+/* Wrap long lines only in plain (non-highlighted) code blocks — i.e. the verbatim
+   prompt blocks — so they read without horizontal scrolling. Highlighted R code
+   (`.sourceCode`) is left alone so its alignment/indentation is preserved. */
+pre:not(.sourceCode),
+pre:not(.sourceCode) code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Inline `code` stays subtle and distinct from the block styling. */
+code:not(pre code) {
+  background-color: #eef1f4;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}

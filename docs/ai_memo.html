@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Verasight DS Case Study – ai_memo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Verasight DS Case Study</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tasks" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Tasks</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tasks">    
+        <li>
+    <a class="dropdown-item" href="./reports/task1.html" rel="" target="">
+ <span class="dropdown-text">Task 1: Weighted crosstabs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./reports/task2.html" rel="" target="">
+ <span class="dropdown-text">Task 2: Response density</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./reports/task3.html" rel="" target="">
+ <span class="dropdown-text">Task 3: Fraud detection</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./reports/task4.html" rel="" target="">
+ <span class="dropdown-text">Task 4: Project scoping</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="./ai_memo.html" rel="" target="" aria-current="page">
+ <span class="menu-text">AI Memo</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#ai-use-memo" id="toc-ai-use-memo" class="nav-link active" data-scroll-target="#ai-use-memo">AI-use memo</a>
+  <ul class="collapse">
+  <li><a href="#working-style-strategic-and-efficient-use" id="toc-working-style-strategic-and-efficient-use" class="nav-link" data-scroll-target="#working-style-strategic-and-efficient-use">Working style — strategic and efficient use</a></li>
+  <li><a href="#which-models-i-used-and-why" id="toc-which-models-i-used-and-why" class="nav-link" data-scroll-target="#which-models-i-used-and-why">1. Which model(s) I used, and why</a></li>
+  <li><a href="#how-i-communicated-with-the-llm" id="toc-how-i-communicated-with-the-llm" class="nav-link" data-scroll-target="#how-i-communicated-with-the-llm">2. How I communicated with the LLM</a></li>
+  <li><a href="#harnessing-around-the-llm-agents-hooks-toolbox-site" id="toc-harnessing-around-the-llm-agents-hooks-toolbox-site" class="nav-link" data-scroll-target="#harnessing-around-the-llm-agents-hooks-toolbox-site">3. Harnessing around the LLM (agents, hooks, toolbox, site)</a></li>
+  <li><a href="#representative-prompts" id="toc-representative-prompts" class="nav-link" data-scroll-target="#representative-prompts">4. Representative prompts</a></li>
+  <li><a href="#how-i-checked-and-ensured-accuracy" id="toc-how-i-checked-and-ensured-accuracy" class="nav-link" data-scroll-target="#how-i-checked-and-ensured-accuracy">5. How I checked and ensured accuracy</a></li>
+  <li><a href="#llm-output-i-corrected-disagreed-with-or-steered" id="toc-llm-output-i-corrected-disagreed-with-or-steered" class="nav-link" data-scroll-target="#llm-output-i-corrected-disagreed-with-or-steered">6. LLM output I corrected, disagreed with, or steered</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="ai-use-memo" class="level1">
+<h1>AI-use memo</h1>
+<p>This memo documents how I used generative AI to complete the case study.</p>
+<p>My approach was to using AI was <strong>supervisory and efficient</strong>: I used AI to execute coding, planning, data-processing, and repetitive work (e.g.,implementation of Tasks 1–3, generate tables/figures, build the website, write documentation) so I could dedicate more time on the analytic and judgment-heavy parts — the Task 4 scoping and ranking, the design logic in Task 3, and the interpretation of results. I specifically chose not to use AI in a first pass in Task 4 so you can see my own thinking process. Wherever possible, I ran <strong>multiple agents in parallel</strong> (e.g., letting an adversarial tester stress-test Task 1 and 2 while I worked on Task 4), and I used AI heavily to <strong>copy edit, streamline, and pressure-test what I had already written</strong>. Nothing went in unreviewed — I read all output, verified the numbers independently, and edited for improvements.</p>
+<section id="working-style-strategic-and-efficient-use" class="level3">
+<h3 class="anchored" data-anchor-id="working-style-strategic-and-efficient-use">Working style — strategic and efficient use</h3>
+<p>A few comments on how I used AI to tie the whole approach together:</p>
+<ul>
+<li><strong>Division of labor.</strong> I pushed the repetitive and mechanical work (implementing functions, generating 48 crosstab tables and the figures, wiring the website) to AI, and reserved my own time for the judgment calls — the Task 4 scoping and ranking, the Task 3 design, and every interpretation. On the judgment tasks I wrote first and used AI to <em>evaluate my reasoning</em>, so the logic on display is mine.</li>
+<li><strong>Parallelism for throughput.</strong> Because agents run in the background, I could launch a stress test or an editorial review and keep working on a different task in the meantime — closer to running a small team than to a single chat.</li>
+<li><strong>AI in specialized roles.</strong> Rather than one general assistant, I set up distinct agents for building, adversarially testing, editing, and committing — each with a narrow, well-defined job.</li>
+<li><strong>A verification-first loop.</strong> For every non-trivial piece: plan → build → independently break/verify → fix → re-verify, with the numbers checked against a second method before I accepted anything.</li>
+<li><strong>Automating the documentation itself.</strong> Tracking models, prompts, and corrections by hand as I worked would have been tedious and error-prone, and a drain on time better spent on the analysis. So I had the harness do it: the prompt-capture hook logged every prompt verbatim, a running <code>ai_log.md</code> recorded decisions and corrections in real time, and <em>this memo</em> was then drafted from that raw material for me to edit. Meeting the assignment’s documentation requirement cost me almost none of my analytic time — I orchestrated it rather than transcribed it.</li>
+<li><strong>Fittingly, Task 3 asks me to <em>design</em> an AI-assisted workflow</strong> — and the harnessing I built for this submission (tiered agents, a human always on the costly call, automatic logging) is a small live demonstration of the same instincts.</li>
+</ul>
+</section>
+<section id="which-models-i-used-and-why" class="level2">
+<h2 class="anchored" data-anchor-id="which-models-i-used-and-why">1. Which model(s) I used, and why</h2>
+<ul>
+<li><strong>Claude Opus 4.8, via Claude Code</strong>, for the coding, data processing, drafting, and harnessing. I chose it because it’s the strongest available model for code and reasoning, and the 1M context let me keep the whole project in view at once (data dictionary, many source files, a long thread) instead of re-establishing state each time.</li>
+<li>The <strong>Task 3 design</strong> proposes a <em>different</em> model strategy for the system it describes — cheap <strong>Claude Haiku</strong> for first-pass triage, escalating uncertain cases to <strong>Sonnet/Opus</strong>. That’s a design recommendation for a production pipeline, not what I used to build this submission.</li>
+</ul>
+</section>
+<section id="how-i-communicated-with-the-llm" class="level2">
+<h2 class="anchored" data-anchor-id="how-i-communicated-with-the-llm">2. How I communicated with the LLM</h2>
+<p>Not a browser chat window — I used <strong>Claude Code</strong>, an agentic CLI/IDE harness inside <a href="https://positron.posit.co">Positron</a> (a VSCode fork developed by Posit for R and Python users), so the model could read/write files, run R (<code>Rscript</code>), render the Quarto site, and manage git directly while I reviewed and directed each step. That let me work at the level of <em>“here’s the design — implement it, then stop for my verification”</em> rather than copy-pasting code back and forth. Because the panel data is already anonymized (respondent IDs are opaque tokens, not names or contact details), processing it locally through the model raised no confidentiality concern.</p>
+</section>
+<section id="harnessing-around-the-llm-agents-hooks-toolbox-site" class="level2">
+<h2 class="anchored" data-anchor-id="harnessing-around-the-llm-agents-hooks-toolbox-site">3. Harnessing around the LLM (agents, hooks, toolbox, site)</h2>
+<p>I used a few skills and agents to harness Claude’s power and make the work steerable, checkable, and parallelizable:</p>
+<ul>
+<li><strong>A project <code>CLAUDE.md</code> for persistent context.</strong> Before writing any analysis, I had the AI run a QA/profiling pass over all four data files and used it to build a verified <strong>data dictionary</strong> (columns, types, keys, join cardinality, weight distribution) and a list of <strong>data wrinkles</strong> to watch for (the ~23% missing-ID rows, the duplicate rows, the ambiguous “last 90 days” reference date, demographic NAs). I captured that — together with standing rules (use the <code>survey</code> package; portable base-R/tidyverse; house style) — in a <code>CLAUDE.md</code> steering file the model automatically reads on every prompt. So the AI started each task already knowing the data and my conventions, and I never had to re-establish that context.</li>
+<li><strong>Three specialized subagents</strong>, so AI played distinct roles instead of one monolithic chat:
+<ul>
+<li><code>adversarial-tester</code> — a read-only agent whose job is to <em>break</em> my code with synthetic known-answer tests and edge cases, not praise it.</li>
+<li><code>git</code> — prepares and stages commits to a consistent convention and stops for my approval.</li>
+<li><code>content-editor</code> — reviews my own Task 3/4 writing for typos, clarity, prompt-coverage, and gaps, while explicitly preserving my voice rather than rewriting into generic prose.</li>
+</ul></li>
+<li><strong>A <code>UserPromptSubmit</code> hook</strong> (added via the update-config skill) that auto-captures every prompt I submit, verbatim, to <code>notes/prompt-capture.log</code> — model-independent, so it can’t drift the way a model-maintained log does. It’s the source for section 4.</li>
+<li><strong>A reusable <code>utils/</code> toolbox</strong> (<code>read_survey()</code>, <code>weighted_crosstab()</code>, <code>density.R</code>), each roxygen-documented so it could drop into a Verasight analysis package rather than live as one-off scripts.</li>
+<li><strong>A Quarto website</strong> to present the four write-ups, which I had the AI build quickly by modeling it on the structure of another repo I maintain — so the navigation, layout, and build config came together in minutes rather than from scratch.</li>
+</ul>
+</section>
+<section id="representative-prompts" class="level2">
+<h2 class="anchored" data-anchor-id="representative-prompts">4. Representative prompts</h2>
+<p>These are pulled <strong>verbatim</strong> from <code>notes/prompt-capture.log</code> (the hook’s record of every prompt I submitted); the longer ones are excerpted where marked. They show my usual pattern — <em>specify the design and the verification plan up front, then hand implementation to the model</em> — across a few modes of use:</p>
+<p><strong>(a) Directing a build, with the verification plan stated up front (Task 1):</strong></p>
+<pre><code>Task 1 of the Verasight case study. Before writing anything, read CLAUDE.md (data dictionary, conventions, known data wrinkles), notes/style.md (table styling), and utils/read_survey.R (use it to load data).
+
+GOAL
+Write a single, well-documented, reusable R function (plus small internal helpers if needed) named weighted_crosstab(), and store the FUNCTION DEFINITION in utils/weighted_crosstab.R (filename matches the function; part of the shared toolbox). Then EXECUTE it in code/01_task1_crosstabs.R, which sources the function (source("utils/weighted_crosstab.R")) and runs it on the recent survey to generate the tables. Keep definition (utils/) and execution (code/) separate.
+
+The function produces weighted proportion tables — one for each survey outcome × demographic variable — matching the attached example, with each question's full wording shown just above its table.
+
+SEMANTICS (match the example exactly)
+- Rows = outcome response levels; columns = demographic categories.
+- Cells = COLUMN proportions: within each demographic category, the response levels sum to 100%. Round to whole percentages. Preserve the outcome's factor-level order for rows (so e.g. a "Don't Know" level still appears even at 0%).
+
+WEIGHTING
+- These are complex-survey weights (verified: all non-integer, most &lt; 1, sum ≈ n) — NOT frequency weights. Compute weighted proportions with the `survey` package. No strata/PSU were provided, so build the design as svydesign(ids = ~1, weights = ~&lt;weight_col&gt;, data = ...) and use svyby/svymean. Do not use unweighted counts.
+
+QUESTION WORDING
+- Attach each outcome's full question text as a title/subtitle above its table, looked up from the reference file (join variable name -&gt; label). Take the reference as an argument.
+
+REUSABILITY (this is the grading bar — a teammate must run it on a DIFFERENT Verasight survey without editing internals)
+- Infer variable roles BY DEFAULT: outcomes = columns matching `^q[0-9]+$`; demographics = all remaining columns except the id and weight columns. Exclude `respondent_id` and `weight` from analysis — they aid analysis, they aren't outcomes.
+- But EXPOSE OVERRIDE ARGUMENTS so nothing is hardcoded: outcomes, demographics, id_col = "respondent_id", weight_col = "weight", reference, and the outcome-detection pattern. Explicit args win over inference.
+
+ROBUSTNESS
+- Handle NA demographic categories and NA responses explicitly (document the choice — e.g. drop NA demographic groups but keep responses visible — rather than silently dropping).
+- Fail with informative errors on: missing weight column, an outcome/demographic not in the data, an empty subgroup, or a non-factor outcome that can't be tabulated.
+
+OUTPUT
+- Style per notes/style.md: clean gt table — bold row labels, right-aligned %, subtle row shading, a vertical rule after the "Response" column. Also RETURN the tables as a named list (keyed by outcome × demographic) so they're programmatically accessible, not just printed.
+
+DOCS &amp; PORTABILITY
+- roxygen-style header on the function: one-line purpose, @param for every argument, @return, a runnable @examples block. Comment any non-obvious logic.
+- Keep deps to survey + tidyverse + gt. Don't over-engineer — one primary function.
+
+code/01_task1_crosstabs.R should: source utils/read_survey.R and utils/weighted_crosstab.R, load data/2024-054_responses.rds and its reference, call weighted_crosstab(), and render the tables for the full set of outcome × demographic pairs (or a clear representative subset).
+
+STOP after writing both files. I'll run them through the adversarial-tester agent and do an independent base-R weighted.mean() hand-check before we accept.</code></pre>
+<p><strong>(b) Framing the analysis and naming the assumptions myself (Task 2, full):</strong></p>
+<pre><code>Task 2: I have a survey response database in data/response-db.rds. Each row is a survey
+response with a user ID and dates (inspect the structure first).
+
+I need to analyze "response density" — how concentrated survey responses
+are among panelists. Three tasks:
+
+1. Find the smallest percent of users who account for 50% of all responses.
+2. Same metric, restricted to users who registered in the last 90 days
+   (use the latest date in the data as the reference point, and state that 
+   assumption).
+3. Visualize the full concentration curve: cumulative % of responses vs.
+   cumulative % of users (most active first), with the 10%–90% thresholds
+   marked. Save the output to output/task2/ as .html file since we'll pull this 
+   into our write up later.
+
+Use R with tidyverse. Write clean, commented code, report the numeric
+answers, and briefly summarize the results — including any assumptions
+or edge cases (ties, users with zero responses, etc.). Name the file you create code/02_task2_density.R</code></pre>
+<p><strong>(c) A short corrective steer, catching a data-handling problem (full):</strong></p>
+<pre><code>I'm confused on how this function is handling NAs or NaNs? Are they only on survey ids? They should be dropped and should not enter the analysis -- I don't want any silent failing here.  </code></pre>
+<p><strong>(d) Using AI to critique my <em>own</em> work rather than write it (Task 4):</strong></p>
+<pre><code>Use the content editor agent on task4.qmd while I work on task3.qmd</code></pre>
+<p>Here I’d written the Task 4 answers myself and used the content-editor agent to pressure-test them for gaps and consistency while I worked on Task 3 — AI reviewing my reasoning, not producing it.</p>
+</section>
+<section id="how-i-checked-and-ensured-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="how-i-checked-and-ensured-accuracy">5. How I checked and ensured accuracy</h2>
+<p>I treated verification as a first-class step. Several of these checks are agents reviewing AI-written code — which carries a correlated-error risk — so I leaned hardest on the checks that <em>don’t</em> share it: independent code paths, known-answer tests, and my own hand-tracing. Specifically, I traced the density metric by hand on a small example, confirmed the synthetic cases were correct <em>tests</em> before trusting them, and spot-checked raw records against the computed figures.</p>
+<ul>
+<li><strong>Independent recomputation.</strong> For Task 1 I recomputed a table cell three ways — the function, base-R <code>weighted.mean()</code>, and <code>survey::svymean()</code> on a separate design — and confirmed they matched to floating-point precision (shown live in the Task 1 write-up).</li>
+<li><strong>Adversarial testing with known answers.</strong> The <code>adversarial-tester</code> agent checked the density metric against synthetic cases with known results (e.g., 1 of 10 users holding 50% of responses → 10%) and reproduced the headline numbers via a fully independent code path. These weren’t rubber stamps — the synthetic cases surfaced a real bug (negative weights would silently produce negative percentages), which I fixed and re-ran to confirm.</li>
+<li><strong>A data-profiling pass before any analysis</strong>, which caught several data-quality issues (detailed below).</li>
+<li><strong>Verifying the specification, not just the arithmetic.</strong> I checked the analytic <em>choices</em> as much as the math — that “last 90 days” meant 90 days back from the latest date in the data (not today), how ties and zero-response users were handled in the concentration metric, and which user universe the denominator used — and stated each assumption explicitly, since a correct computation of the wrong quantity is still wrong.</li>
+<li><strong>Running and rendering everything</strong> — every script executes and every report renders; I read the actual outputs rather than trusting that code “looks right.”</li>
+<li><strong>AI as a critic of my own writing</strong> — the <code>content-editor</code> agent for a final accuracy, consistency, and coverage pass over Tasks 3 and 4.</li>
+</ul>
+</section>
+<section id="llm-output-i-corrected-disagreed-with-or-steered" class="level2">
+<h2 class="anchored" data-anchor-id="llm-output-i-corrected-disagreed-with-or-steered">6. LLM output I corrected, disagreed with, or steered</h2>
+<p>Some representative examples of where I overrode or redirected the AI:</p>
+<ul>
+<li><strong>Task 1 — continuous <code>age</code> swept in as a demographic.</strong> The literal inference rule I described in planning would have treated the continuous <code>age</code> column as a ~70-category demographic; I had it refined to categorical-only inference plus a guard that errors on continuous variables.</li>
+<li><strong>Task 1 — a robustness fix I directed.</strong> After the tester surfaced the negative-weight bug (§5), I had a non-negativity guard added so the function errors on invalid weights instead of silently returning nonsense — the kind of edge case a teammate reusing it would eventually hit.</li>
+<li><strong>Task 2 — the “22% mega-user” that wasn’t.</strong> The model’s first pass counted responses with a plain <code>count()</code>, which lumped <strong>all 43,692 missing-ID rows into a single <code>NA</code> “user”</strong> holding 22% of responses. I caught it in the profiling output and directed that unattributable rows be dropped — moving the headline answer from a misleading ~9.9% to the correct <strong>15.67%</strong>.</li>
+<li><strong>Task 4 — a factual slip I wrote, caught on review.</strong> The <code>content-editor</code> flagged that my ranking assumed the longitudinal waves spanned “6 months to a year,” contradicting the prompt’s “each a month apart”; I corrected it to ~3–4 months.</li>
+<li><strong>Disagreeing with the AI critic.</strong> The tester also proposed changing a boundary check to <code>&gt;=</code>; I declined it because it would have made the inference and guard logic inconsistent.</li>
+<li><strong>Tooling steers.</strong> I steered the estimation engine to the <code>survey</code> package (not plain weighted means), and when a version mismatch broke <code>ggplotly()</code>, I had the package updated rather than accept the silent fallback.</li>
+<li><strong>This memo.</strong> I’m editing the AI’s draft of this document for accuracy and voice — itself an instance of not shipping AI output unchecked.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Verasight Data Scientist Case Study</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
