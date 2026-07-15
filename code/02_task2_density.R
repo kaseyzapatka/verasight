@@ -27,15 +27,12 @@ source(here::here("utils", "density.R"))    # clean_responses, concentration_cur
 suppressWarnings(suppressMessages({
   library(dplyr)
   library(ggplot2)
-  library(plotly)
-  library(htmlwidgets)
 }))
 
-# Save a ggplot concentration figure as a self-contained interactive HTML.
-save_density_html <- function(fig, path) {
-  widget <- ggplotly(fig, tooltip = "text")
-  saveWidget(widget, path, selfcontained = TRUE, title = "Task 2 - Response density")
-  unlink(sub("\\.html$", "_files", path), recursive = TRUE)   # drop leftover libdir
+# Save a concentration-curve figure as a PNG (static; previews on GitHub and
+# embeds cleanly in the report).
+save_density_png <- function(fig, path) {
+  ggsave(path, fig, width = 8, height = 5, dpi = 150, bg = "white")
 }
 
 # ---- load + clean -----------------------------------------------------------
@@ -95,9 +92,9 @@ fig_all    <- density_figure(per_user$responses,
 fig_recent <- density_figure(per_recent$responses,
                              "Response density — registered in the last 90 days")
 
-save_density_html(fig_all,    file.path(out_dir, "density_curve_all.html"))
-save_density_html(fig_recent, file.path(out_dir, "density_curve_recent.html"))
-cat(sprintf("Saved 2 concentration curves to %s/\n\n", out_dir))
+save_density_png(fig_all,    file.path(out_dir, "density_curve_all.png"))
+save_density_png(fig_recent, file.path(out_dir, "density_curve_recent.png"))
+cat(sprintf("Saved 2 concentration curves (PNG) to %s/\n\n", out_dir))
 
 # ---- interpretation ---------------------------------------------------------
 cat("=== Interpretation ===\n")

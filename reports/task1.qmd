@@ -1,5 +1,5 @@
 ---
-title: "Task 1 — Weighted Crosstab Function"
+title: "Task 1: Weighted Crosstab Function"
 subtitle: "Verasight Data Scientist Case Study"
 format:
   html:
@@ -44,25 +44,23 @@ wording attached above its table. The execution script
 The design goal was the grading bar: *a teammate can run it on a different Verasight survey
 without editing any internals.* Everything survey-specific is an **argument**, not hardcoded.
 
-## How the function works
+## How it works
 
-- **Weighting.** These are complex-survey weights (verified: all non-integer, most < 1,
-  sum ≈ *n*), not frequency weights. Estimation uses the **`survey`** package —
-  `svydesign(ids = ~1, weights = ~weight)` → `svytable()` — then normalizes weighted counts
-  **within each demographic column** so each column sums to 100% across the response levels.
-- **Question wording** is joined from the reference file (`variable → label`) and shown as
-  each table's title.
-- **Reusability by inference + override.** By default it *infers* roles — outcomes are columns
-  matching `^q[0-9]+$`; demographics are the remaining **categorical** columns (excluding the
-  id and weight). Every role is also an explicit argument (`outcomes`, `demographics`,
-  `weight_col`, `id_col`, `reference`, `ref_var`/`ref_label`, `outcome_pattern`), and explicit
-  arguments always win.
-- **Robustness.** Missing demographics are dropped (or shown as `(Missing)` via
-  `na_demographic = "keep"`); missing responses are excluded so percentages are among
-  answerers; empty response levels are retained at 0%; **continuous / high-cardinality
-  columns are hard-skipped** (`max_categories`, default 20) so a variable like raw `age`
-  can never explode into dozens of columns; and **negative weights error** (survey weights
-  must be ≥ 0).
+At a high level:
+
+- **Weighted the right way.** These are complex-survey weights (not frequency weights), so
+  estimation uses the **`survey`** package (`svydesign` → `svytable`), normalized so each
+  demographic column sums to 100% across the response levels.
+- **Question wording** is joined from the reference file and shown as each table's title.
+- **Reusable by design.** Roles are *inferred* by default (outcomes match `^q[0-9]+$`;
+  demographics are the remaining categorical columns), but every role is an argument you can
+  override — so the same function runs on a different survey without touching its internals.
+- **Safe by default.** It handles missing values, keeps empty response levels at 0%, hard-skips
+  continuous columns like raw `age`, and errors on negative weights.
+
+The function carries full **roxygen documentation** (`@param` / `@return` / `@examples`), so it
+could drop straight into a Verasight analysis package as a documented, reusable helper rather
+than living as a one-off script.
 
 ## Example: survey 2024-054
 

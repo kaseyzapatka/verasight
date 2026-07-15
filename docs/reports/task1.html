@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Verasight DS Case Study - Task 1 — Weighted Crosstab Function</title>
+<title>Verasight DS Case Study - Task 1: Weighted Crosstab Function</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4537,7 +4537,7 @@ vertical-align: -.125em;
    
   <ul class="collapse">
   <li><a href="#what-i-built" id="toc-what-i-built" class="nav-link active" data-scroll-target="#what-i-built">What I built</a></li>
-  <li><a href="#how-the-function-works" id="toc-how-the-function-works" class="nav-link" data-scroll-target="#how-the-function-works">How the function works</a></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works">How it works</a></li>
   <li><a href="#example-survey-2024-054" id="toc-example-survey-2024-054" class="nav-link" data-scroll-target="#example-survey-2024-054">Example: survey 2024-054</a></li>
   <li><a href="#manual-validation" id="toc-manual-validation" class="nav-link" data-scroll-target="#manual-validation">Manual validation</a></li>
   <li><a href="#it-works-on-a-different-colleagues-survey" id="toc-it-works-on-a-different-colleagues-survey" class="nav-link" data-scroll-target="#it-works-on-a-different-colleagues-survey">It works on a different colleague’s survey</a></li>
@@ -4550,7 +4550,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Task 1 — Weighted Crosstab Function</h1>
+<h1 class="title">Task 1: Weighted Crosstab Function</h1>
 <p class="subtitle lead">Verasight Data Scientist Case Study</p>
 </div>
 
@@ -4574,14 +4574,16 @@ vertical-align: -.125em;
 <p>A single reusable function, <code>weighted_crosstab()</code> (defined in <a href="../utils/weighted_crosstab.R"><code>utils/weighted_crosstab.R</code></a>), that produces <strong>weighted proportion tables</strong> — one for each survey <strong>outcome × demographic</strong> — with each question’s wording attached above its table. The execution script <a href="../code/01_task1_crosstabs.R"><code>code/01_task1_crosstabs.R</code></a> runs it on survey <code>2024-054</code>.</p>
 <p>The design goal was the grading bar: <em>a teammate can run it on a different Verasight survey without editing any internals.</em> Everything survey-specific is an <strong>argument</strong>, not hardcoded.</p>
 </section>
-<section id="how-the-function-works" class="level2">
-<h2 class="anchored" data-anchor-id="how-the-function-works">How the function works</h2>
+<section id="how-it-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-it-works">How it works</h2>
+<p>At a high level:</p>
 <ul>
-<li><strong>Weighting.</strong> These are complex-survey weights (verified: all non-integer, most &lt; 1, sum ≈ <em>n</em>), not frequency weights. Estimation uses the <strong><code>survey</code></strong> package — <code>svydesign(ids = ~1, weights = ~weight)</code> → <code>svytable()</code> — then normalizes weighted counts <strong>within each demographic column</strong> so each column sums to 100% across the response levels.</li>
-<li><strong>Question wording</strong> is joined from the reference file (<code>variable → label</code>) and shown as each table’s title.</li>
-<li><strong>Reusability by inference + override.</strong> By default it <em>infers</em> roles — outcomes are columns matching <code>^q[0-9]+$</code>; demographics are the remaining <strong>categorical</strong> columns (excluding the id and weight). Every role is also an explicit argument (<code>outcomes</code>, <code>demographics</code>, <code>weight_col</code>, <code>id_col</code>, <code>reference</code>, <code>ref_var</code>/<code>ref_label</code>, <code>outcome_pattern</code>), and explicit arguments always win.</li>
-<li><strong>Robustness.</strong> Missing demographics are dropped (or shown as <code>(Missing)</code> via <code>na_demographic = &quot;keep&quot;</code>); missing responses are excluded so percentages are among answerers; empty response levels are retained at 0%; <strong>continuous / high-cardinality columns are hard-skipped</strong> (<code>max_categories</code>, default 20) so a variable like raw <code>age</code> can never explode into dozens of columns; and <strong>negative weights error</strong> (survey weights must be ≥ 0).</li>
+<li><strong>Weighted the right way.</strong> These are complex-survey weights (not frequency weights), so estimation uses the <strong><code>survey</code></strong> package (<code>svydesign</code> → <code>svytable</code>), normalized so each demographic column sums to 100% across the response levels.</li>
+<li><strong>Question wording</strong> is joined from the reference file and shown as each table’s title.</li>
+<li><strong>Reusable by design.</strong> Roles are <em>inferred</em> by default (outcomes match <code>^q[0-9]+$</code>; demographics are the remaining categorical columns), but every role is an argument you can override — so the same function runs on a different survey without touching its internals.</li>
+<li><strong>Safe by default.</strong> It handles missing values, keeps empty response levels at 0%, hard-skips continuous columns like raw <code>age</code>, and errors on negative weights.</li>
 </ul>
+<p>The function carries full <strong>roxygen documentation</strong> (<code>@param</code> / <code>@return</code> / <code>@examples</code>), so it could drop straight into a Verasight analysis package as a documented, reusable helper rather than living as a one-off script.</p>
 </section>
 <section id="example-survey-2024-054" class="level2">
 <h2 class="anchored" data-anchor-id="example-survey-2024-054">Example: survey 2024-054</h2>
@@ -4598,11 +4600,11 @@ vertical-align: -.125em;
 </details>
 <div class="cell-output-display">
 
-<div id="vdkunkhqyh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="fibutlkjjh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
 font-family: Helvetica, Arial, sans-serif;
 }
-:where(#vdkunkhqyh) .gt_table {
+:where(#fibutlkjjh) .gt_table {
 display: table;
 border-collapse: collapse;
 margin-left: auto;
@@ -4626,7 +4628,7 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_heading {
+:where(#fibutlkjjh) .gt_heading {
 background-color: #FFFFFF;
 text-align: left;
 border-bottom-color: #FFFFFF;
@@ -4637,11 +4639,11 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_caption {
+:where(#fibutlkjjh) .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-:where(#vdkunkhqyh) .gt_title {
+:where(#fibutlkjjh) .gt_title {
 color: #1F2A44;
 font-size: 15px;
 font-weight: initial;
@@ -4652,7 +4654,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-:where(#vdkunkhqyh) .gt_subtitle {
+:where(#fibutlkjjh) .gt_subtitle {
 color: #1F2A44;
 font-size: 85%;
 font-weight: initial;
@@ -4663,12 +4665,12 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-:where(#vdkunkhqyh) .gt_bottom_border {
+:where(#fibutlkjjh) .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_col_headings {
+:where(#fibutlkjjh) .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4682,7 +4684,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_col_heading {
+:where(#fibutlkjjh) .gt_col_heading {
 color: #1F2A44;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4701,7 +4703,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-:where(#vdkunkhqyh) .gt_column_spanner_outer {
+:where(#fibutlkjjh) .gt_column_spanner_outer {
 color: #1F2A44;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4712,13 +4714,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-:where(#vdkunkhqyh) .gt_column_spanner_outer:first-child {
+:where(#fibutlkjjh) .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-:where(#vdkunkhqyh) .gt_column_spanner_outer:last-child {
+:where(#fibutlkjjh) .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-:where(#vdkunkhqyh) .gt_column_spanner {
+:where(#fibutlkjjh) .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -4729,7 +4731,7 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-:where(#vdkunkhqyh) .gt_group_heading {
+:where(#fibutlkjjh) .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4754,7 +4756,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-:where(#vdkunkhqyh) .gt_empty_group_heading {
+:where(#fibutlkjjh) .gt_empty_group_heading {
 padding: 0.5px;
 color: #1F2A44;
 background-color: #FFFFFF;
@@ -4768,13 +4770,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-:where(#vdkunkhqyh) .gt_from_md > :first-child {
+:where(#fibutlkjjh) .gt_from_md > :first-child {
 margin-top: 0;
 }
-:where(#vdkunkhqyh) .gt_from_md > :last-child {
+:where(#fibutlkjjh) .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-:where(#vdkunkhqyh) .gt_row {
+:where(#fibutlkjjh) .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4792,7 +4794,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-:where(#vdkunkhqyh) .gt_stub {
+:where(#fibutlkjjh) .gt_stub {
 color: #1F2A44;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4804,7 +4806,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-:where(#vdkunkhqyh) .gt_stub_row_group {
+:where(#fibutlkjjh) .gt_stub_row_group {
 color: #1F2A44;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4817,10 +4819,10 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-:where(#vdkunkhqyh) .gt_row_group_first td {
+:where(#fibutlkjjh) .gt_row_group_first td {
 border-top-width: 2px;
 }
-:where(#vdkunkhqyh) .gt_summary_row {
+:where(#fibutlkjjh) .gt_summary_row {
 color: #1F2A44;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4829,14 +4831,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-:where(#vdkunkhqyh) .gt_first_summary_row {
+:where(#fibutlkjjh) .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_first_summary_row.thick {
+:where(#fibutlkjjh) .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-:where(#vdkunkhqyh) .gt_last_summary_row {
+:where(#fibutlkjjh) .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4845,7 +4847,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_grand_summary_row {
+:where(#fibutlkjjh) .gt_grand_summary_row {
 color: #1F2A44;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4854,7 +4856,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-:where(#vdkunkhqyh) .gt_first_grand_summary_row {
+:where(#fibutlkjjh) .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4863,10 +4865,10 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_striped {
+:where(#fibutlkjjh) .gt_striped {
 background-color: #F2F4F6;
 }
-:where(#vdkunkhqyh) .gt_table_body {
+:where(#fibutlkjjh) .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4874,7 +4876,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_footnotes {
+:where(#fibutlkjjh) .gt_footnotes {
 color: #1F2A44;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4887,7 +4889,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_footnote {
+:where(#fibutlkjjh) .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-left: 4px;
@@ -4895,7 +4897,7 @@ padding-right: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-:where(#vdkunkhqyh) .gt_sourcenotes {
+:where(#fibutlkjjh) .gt_sourcenotes {
 color: #1F2A44;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4908,58 +4910,58 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-:where(#vdkunkhqyh) .gt_sourcenote {
+:where(#fibutlkjjh) .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-:where(#vdkunkhqyh) .gt_left {
+:where(#fibutlkjjh) .gt_left {
 text-align: left;
 }
-:where(#vdkunkhqyh) .gt_center {
+:where(#fibutlkjjh) .gt_center {
 text-align: center;
 }
-:where(#vdkunkhqyh) .gt_right {
+:where(#fibutlkjjh) .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-:where(#vdkunkhqyh) .gt_font_normal {
+:where(#fibutlkjjh) .gt_font_normal {
 font-weight: normal;
 }
-:where(#vdkunkhqyh) .gt_font_bold {
+:where(#fibutlkjjh) .gt_font_bold {
 font-weight: bold;
 }
-:where(#vdkunkhqyh) .gt_font_italic {
+:where(#fibutlkjjh) .gt_font_italic {
 font-style: italic;
 }
-:where(#vdkunkhqyh) .gt_super {
+:where(#fibutlkjjh) .gt_super {
 font-size: 65%;
 }
-:where(#vdkunkhqyh) .gt_footnote_marks {
+:where(#fibutlkjjh) .gt_footnote_marks {
 font-style: italic;
 font-weight: normal;
 font-size: 75%;
 vertical-align: 0.4em;
 }
-:where(#vdkunkhqyh) .gt_asterisk {
+:where(#fibutlkjjh) .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-:where(#vdkunkhqyh) .gt_indent_1 {
+:where(#fibutlkjjh) .gt_indent_1 {
 text-indent: 5px;
 }
-:where(#vdkunkhqyh) .gt_indent_2 {
+:where(#fibutlkjjh) .gt_indent_2 {
 text-indent: 10px;
 }
-:where(#vdkunkhqyh) .gt_indent_3 {
+:where(#fibutlkjjh) .gt_indent_3 {
 text-indent: 15px;
 }
-:where(#vdkunkhqyh) .gt_indent_4 {
+:where(#fibutlkjjh) .gt_indent_4 {
 text-indent: 20px;
 }
-:where(#vdkunkhqyh) .gt_indent_5 {
+:where(#fibutlkjjh) .gt_indent_5 {
 text-indent: 25px;
 }
 </style>
