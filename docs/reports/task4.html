@@ -4533,7 +4533,10 @@ border-radius: 3px;
    
   <ul class="collapse">
   <li><a href="#part-1-scoping-questions" id="toc-part-1-scoping-questions" class="nav-link active" data-scroll-target="#part-1-scoping-questions">Part 1: Scoping questions</a></li>
-  <li><a href="#part-2-ranking-by-time-intensity" id="toc-part-2-ranking-by-time-intensity" class="nav-link" data-scroll-target="#part-2-ranking-by-time-intensity">Part 2: Ranking by time intensity</a></li>
+  <li><a href="#part-2-ranking-by-time-intensity" id="toc-part-2-ranking-by-time-intensity" class="nav-link" data-scroll-target="#part-2-ranking-by-time-intensity">Part 2: Ranking by time intensity</a>
+  <ul class="collapse">
+  <li><a href="#headline-rankings" id="toc-headline-rankings" class="nav-link" data-scroll-target="#headline-rankings">Headline Rankings</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -4671,6 +4674,9 @@ My questions (1–3)
 <p>“Now assume you receive answers to the questions you included above. Given what you know now, please rank these projects from 1-4 in order of how time intensive you think they will be for you as a Data Scientist. The project you rank first should be the project you expect to take the most of your time, and the project you rank 4th should be the project you expect to take the least amount of your time. Be explicit about the assumptions you make and provide reasoning for the ranking. (Note: There are no right or wrong answers for this question — we want to get insight into your thought process.)”</p>
 <p><em>— 2026 Data Scientist Case Study, Task 4, Part 2</em></p>
 </blockquote>
+<section id="headline-rankings" class="level2">
+<h2 class="anchored" data-anchor-id="headline-rankings">Headline Rankings</h2>
+<p>Even if some of my assumptions for <strong>Project 3</strong> change, I think it will remain the most difficult project and require the most time, even if in a shorter time window than the <strong>Project 4</strong>, which I think this is firmly in second place. If some of the assumptions of <strong>Projects 1 and 2</strong> change, they could switch places.</p>
 <p><strong>My ranking</strong> (1 = most time-intensive, 4 = least):</p>
 <table class="table">
 <thead>
@@ -4700,13 +4706,13 @@ My questions (1–3)
 </table>
 <section id="project-3-ai-software-developer-survey" class="level3">
 <h3 class="anchored" data-anchor-id="project-3-ai-software-developer-survey">1. Project 3: AI software-developer survey</h3>
-<p>Assuming the answers to my questions above confirm the client has no benchmark in mind and can’t hand us a clean frame, the responsibility to develop a sampling frame and benchmarks falls solely to us, and constructing a weighting scheme for a population with no frame is open-ended methodological work that will require some time, skill, and creativity. It will require a comprehensive literature review to determine what potential data is out there, a complicated benchmark construction, lots of sensitivity checks, and a defensible writeup that will take time and probably require the eyes of other data scientists. While the timeframe is shorter than Project 4’s longitudinal survey, the detailed methodological work on this will require more effort.</p>
-<p>If the client has a specific idea of their target sample and a good dataset in mind for benchmarking (and is OK with weighting to soft targets), then this could be an easier lift.</p>
+<p>Assuming the answers to my questions above confirm the client has no benchmark in mind and can’t hand us a clean frame, the responsibility to develop a sampling frame and benchmarks falls solely to us, and constructing a weighting scheme for a population with no frame is open-ended methodological work that will require a lot of time, skill, and creativity. It will require a comprehensive literature review to determine what potential data is out there, a complicated benchmark construction, lots of sensitivity checks, and a defensible writeup that will take time and probably require the eyes of other data scientists. While the timeframe is shorter than Project 4’s longitudinal survey, the detailed methodological work on this will require more effort.</p>
+<p>If the client has a specific idea of their target sample and a good dataset in mind for benchmarking (and is OK with weighting to soft targets), then parts of this could be an easier lift. Even if this was the case, this will easily be the most difficult and require the most time, even if in a shorter time window than the longitudinal study I rank next.</p>
 </section>
 <section id="project-4-longitudinal-survey-of-working-women" class="level3">
 <h3 class="anchored" data-anchor-id="project-4-longitudinal-survey-of-working-women">2. Project 4: Longitudinal survey of working women</h3>
 <p>Unless these are rigorous academics who have experience fielding their own surveys, I assume moderate editing to the materials before fielding can begin. I also assume “working women” will be somewhat loosely defined, not specific to any industry or occupation, which will make it easier for fielding. I assume that if someone becomes unemployed during the study, we’ll have to drop them from the sample, which will negatively impact retention rates. I also assume that by 1,000 person survey, they meant to start the first wave and that, with waves a month apart, the whole thing wraps in about 3-4 months.</p>
-<p>So, the big lift for this project will be retention bc that’s not a huge sample for 4 waves where I’d expect a good amount of attrition. We’ll need to determine a large initial sample to ensure high enough retention rates and then ensure retention rates are of high enough quality as it proceeds and likely need to adjust incentives if the client has low incentives coming in. If the client has done quality preparation of the materials to the extent they do not need much editing and has a good incentive and retention strategy, that could lighten the expected work on this.</p>
+<p>So, the big lift for this project will be retention bc that’s not a huge sample for 4 waves where I’d expect a good amount of attrition. We’ll need to determine a large initial sample to ensure high enough retention rates and then ensure retention rates are of high enough quality as it proceeds and likely need to adjust incentives if the client has low incentives coming in. This is not to mention the construction of longitudinal weights and adjustments required with sample attrition, although per-wave work may become routine once it’s up and running. If the client has done quality preparation of the materials to the extent they do not need much editing and has a good incentive and retention strategy, that could lighten the expected work on this, but the longitudinal weighting and adjustments for attrition will remain. I think this is firmly the second most difficult project.</p>
 </section>
 <section id="project-1-nationally-representative-survey" class="level3">
 <h3 class="anchored" data-anchor-id="project-1-nationally-representative-survey">3. Project 1: Nationally-representative survey</h3>
@@ -4718,6 +4724,7 @@ My questions (1–3)
 <p>Assuming my questions above come back confirming standard demographic quotas, usable contact info, and a straightforward “voter” definition (say, anyone who voted in any of the last three elections), this is a standard state voter poll with fewer complications. The bulk of the work will come from cleaning the voter file and building a sample frame, but the fielding will be straightforward enough – assuming the client hands us usable contact info (phones/addresses) or a panel match, since reaching voters off a bare file would make it noticeably harder. If I need to obtain and clean the voter file from scratch or if the demographic requirements are more complicated and hard to field, I could see this requiring more effort.</p>
 
 
+</section>
 </section>
 </section>
 
