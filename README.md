@@ -4,6 +4,8 @@ Submission for the Verasight Data Scientist case study. All analysis is in **R**
 a teammate could pick it up and reuse it on a different survey. The four write-ups are published
 as a small **Quarto website** (`docs/`), with a reusable helper toolbox in `utils/`.
 
+**🔗 Live site:** <https://kaseyzapatka.github.io/verasight/>
+
 ## The four tasks
 
 | Task | What it does |

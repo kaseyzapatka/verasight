@@ -34,4 +34,7 @@ format:
     theme: litera
     css: styles.css
     toc: true
-    embed-resources: true
+    # NOTE: no `embed-resources` here. This is a `type: website` project, and a
+    # website render cannot inline htmlwidget (plotly) libraries — with embedding
+    # on, Quarto writes ../site_libs/ links but never creates the folder (→ 404 on
+    # the interactive figures). Leaving it off lets the render populate docs/site_libs/.

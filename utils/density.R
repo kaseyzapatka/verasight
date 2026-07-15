@@ -66,6 +66,22 @@ min_user_share_for <- function(counts, target = 0.5) {
   cc$cum_users[which(cc$cum_responses >= target)[1]]
 }
 
+#' Threshold lookup: smallest user share for each of several response targets
+#'
+#' Convenience wrapper over `min_user_share_for()` for the 10%-90% lookup the
+#' density question asks for ("the minimum percent of users who account for
+#' 10%/20%/... of responses").
+#'
+#' @param counts Numeric vector of responses per user.
+#' @param targets Response shares to look up (0-1). Default seq(0.1, 0.9, 0.1).
+#' @return Tibble with `response_share` and `min_user_share` (both 0-1).
+min_user_share_table <- function(counts, targets = seq(0.1, 0.9, 0.1)) {
+  tibble::tibble(
+    response_share = targets,
+    min_user_share = vapply(targets, function(t) min_user_share_for(counts, t), numeric(1))
+  )
+}
+
 #' Gini coefficient of a non-negative vector (0 = perfectly even, 1 = all in one).
 #' @param x Numeric vector.
 gini <- function(x) {
@@ -78,9 +94,10 @@ gini <- function(x) {
 #'
 #' Draws the concentration curve, the line of perfect equality, the 10%-90%
 #' response thresholds, and a highlighted marker + guide lines at the 50%
-#' threshold (the base question). Both axes run 0-100 in steps of 10. The
-#' returned ggplot carries a `text` aesthetic, so `plotly::ggplotly(fig,
-#' tooltip = "text")` yields clean hover labels.
+#' threshold (the base question). Both axes run 0-100 in steps of 10. Every
+#' layer carries a `text` aesthetic, so `plotly::ggplotly(fig, tooltip = "text")`
+#' yields clean hover labels on the curve and the threshold dots. (When saved
+#' as a static PNG the `text` aesthetic is simply ignored -- harmless.)
 #'
 #' @param counts Numeric vector of responses per user.
 #' @param title Optional plot title.
@@ -96,7 +113,7 @@ density_figure <- function(counts, title = NULL) {
     x = c(0, cp$cum_users * 100),
     y = c(0, cp$cum_responses * 100)
   )
-  cp$hover <- sprintf("top %.1f%% of users → %.1f%% of responses", cp$x, cp$y)
+  cp$hover <- sprintf("top %.1f%% of users -> %.1f%% of responses", cp$x, cp$y)
 
   # 10%-90% threshold markers (50% is drawn separately as the highlight).
   thr   <- setdiff(seq(0.1, 0.9, 0.1), 0.5)
@@ -104,30 +121,35 @@ density_figure <- function(counts, title = NULL) {
     x = vapply(thr, function(t) 100 * min_user_share_for(counts, t), numeric(1)),
     y = thr * 100
   )
-  marks$hover <- sprintf("%.0f%% of responses ← top %.1f%% of users", marks$y, marks$x)
+  marks$hover <- sprintf("%.0f%% of responses <- top %.1f%% of users", marks$y, marks$x)
 
   x50 <- 100 * min_user_share_for(counts, 0.5)
   hi_pt <- tibble::tibble(
     x = x50, y = 50,
-    hover = sprintf("50%% of responses ← top %.1f%% of users", x50)
+    hover = sprintf("50%% of responses <- top %.1f%% of users", x50)
   )
 
-  ggplot2::ggplot(cp, ggplot2::aes(x, y)) +
-    ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = gray) +
-    # 50% guide lines (base question)
-    ggplot2::annotate("segment", x = 0, xend = x50, y = 50, yend = 50, linetype = "dotted", color = hi) +
-    ggplot2::annotate("segment", x = x50, xend = x50, y = 0, yend = 50, linetype = "dotted", color = hi) +
-    ggplot2::geom_line(ggplot2::aes(text = hover), color = navy, linewidth = 1) +
-    ggplot2::geom_point(data = marks, ggplot2::aes(x, y, text = hover),
-                        color = accent, size = 2, inherit.aes = FALSE) +
-    ggplot2::geom_point(data = hi_pt, ggplot2::aes(x, y, text = hover),
-                        color = hi, size = 3.5, inherit.aes = FALSE) +
-    ggplot2::scale_x_continuous(breaks = seq(0, 100, 10), limits = c(0, 100)) +
-    ggplot2::scale_y_continuous(breaks = seq(0, 100, 10), limits = c(0, 100)) +
-    ggplot2::labs(title = title,
-                  x = "Cumulative % of users (most active first)",
-                  y = "Cumulative % of responses") +
-    ggplot2::theme_minimal(base_family = "sans", base_size = 12) +
-    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
-                   plot.title = ggplot2::element_text(color = navy, size = 13))
+  # The `text` aesthetic is only meaningful to plotly; ggplot2 warns it is unknown
+  # while building the (static) layers. Suppress that one construction-time warning
+  # here so callers stay clean; the mapping is preserved for `ggplotly()`.
+  suppressWarnings(
+    ggplot2::ggplot(cp, ggplot2::aes(x, y)) +
+      ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = gray) +
+      # 50% guide lines (base question)
+      ggplot2::annotate("segment", x = 0, xend = x50, y = 50, yend = 50, linetype = "dotted", color = hi) +
+      ggplot2::annotate("segment", x = x50, xend = x50, y = 0, yend = 50, linetype = "dotted", color = hi) +
+      ggplot2::geom_line(ggplot2::aes(text = hover), color = navy, linewidth = 1) +
+      ggplot2::geom_point(data = marks, ggplot2::aes(x, y, text = hover),
+                          color = accent, size = 2, inherit.aes = FALSE) +
+      ggplot2::geom_point(data = hi_pt, ggplot2::aes(x, y, text = hover),
+                          color = hi, size = 3.5, inherit.aes = FALSE) +
+      ggplot2::scale_x_continuous(breaks = seq(0, 100, 10), limits = c(0, 100)) +
+      ggplot2::scale_y_continuous(breaks = seq(0, 100, 10), limits = c(0, 100)) +
+      ggplot2::labs(title = title,
+                    x = "Cumulative % of users (most active first)",
+                    y = "Cumulative % of responses") +
+      ggplot2::theme_minimal(base_family = "sans", base_size = 12) +
+      ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                     plot.title = ggplot2::element_text(color = navy, size = 13))
+  )
 }
