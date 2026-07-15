@@ -7,11 +7,14 @@
 
 #' Weighted proportion crosstabs for survey outcomes by demographics
 #'
-#' Builds column-proportion tables (within each demographic category, the outcome's response
-#' levels sum to 100%) for every survey outcome x demographic combination, using
-#' complex-survey weights via the \code{survey} package. Each question's wording is shown
-#' above its table via a reference lookup. Built to run on any Verasight survey without
-#' editing internals: variable roles are inferred by default but every role is overridable.
+#' For every survey question x demographic pair, this builds a table of weighted proportions
+#' where each demographic column sums to 100% down the response options — the standard
+#' "crosstab" deliverable. It uses complex-survey weights via the \code{survey} package and
+#' attaches each question's wording as the table title.
+#'
+#' It is built to be reused: point it at any Verasight survey and it works out which columns
+#' are questions and which are demographics on its own, or you can tell it explicitly. You
+#' never edit the function to run it on a new dataset — you only change arguments.
 #'
 #' @param data A data frame / tibble of survey responses (one row per respondent).
 #' @param outcomes Character vector of outcome (question) columns. If \code{NULL} (default),
